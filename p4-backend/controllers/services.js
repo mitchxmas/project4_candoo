@@ -100,7 +100,7 @@ const putSellerService = async (req, res) => {
         service_id: req.body.service_id,
         seller_id: req.body.seller_id,
         price: req.body.price,
-        // price_type: req.body.price_type,
+        price_type: req.body.price_type,
       },
     });
     res.json({ status: "OK", msg: "user saved" });

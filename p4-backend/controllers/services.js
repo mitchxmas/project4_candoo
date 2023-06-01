@@ -1,6 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const bcrypt = require("bcrypt");
 
 // --- CRUD Functions ---
 
@@ -91,6 +90,7 @@ const getAllServiceSellers = async (req, res) => {
   }
 };
 
+// PUT Add a service to seller
 const putSellerService = async (req, res) => {
   try {
     await prisma.seller_services.create({
@@ -99,6 +99,8 @@ const putSellerService = async (req, res) => {
         desc: req.body.desc,
         service_id: req.body.service_id,
         seller_id: req.body.seller_id,
+        price: req.body.price,
+        // price_type: req.body.price_type,
       },
     });
     res.json({ status: "OK", msg: "user saved" });
@@ -108,22 +110,19 @@ const putSellerService = async (req, res) => {
   }
 };
 
+// DELETE Delete a cart item for a user
 const deleteSellerService = async (req, res) => {
   try {
     await prisma.seller_services.delete({
       where: {
-        AND: [
-          { service_id: req.body.service_id },
-          { seller_id: req.body.seller_id },
-        ],
+        id: req.body.id,
       },
     });
 
-    // await prisma.users.findByIdAndDelete(req.params.id);
-    res.json({ status: "ok", msg: "user deleted" });
+    res.json({ status: "ok", msg: "service deleted from seller" });
   } catch (error) {
     console.log(error.message);
-    res.json({ status: "error", msg: "error deleting user" });
+    res.json({ status: "error", msg: "error deleting service from seller" });
   }
 };
 

@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const users = require("./routers/users");
 const services = require("./routers/services");
+const orders = require("./routers/orders");
 const auth = require("./routers/auth");
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api", users);
 app.use("/api", services);
+app.use("/api", orders);
 
 app.use("/auth", auth);
 

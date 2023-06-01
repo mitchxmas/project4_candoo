@@ -75,6 +75,8 @@ model Seller_services {
   id            Int     @id @default(autoincrement())
   name          String @db.VarChar(255)
   desc          String @db.VarChar(255)
+  price         Int
+  price_type  String @db.VarChar(255)
   
   // 1 to 1 link to the services table (one seller_service can only belong to one service) 
   service Services @relation(fields: [service_id], references: [id]) 
@@ -95,6 +97,7 @@ model Seller_services {
 model Cart_items {
   id            Int     @id @default(autoincrement())
   quantity      Int
+  price         Decimal
   created_at    DateTime @default(now())
   modified_at   DateTime @updatedAt
  
@@ -113,6 +116,7 @@ model Cart_items {
 model Orders {
   id            Int     @id @default(autoincrement())
   quantity      Int
+  price         Decimal
   total         Decimal
    created_at    DateTime @default(now())
   
@@ -131,6 +135,7 @@ order_items Order_items[]
 model Order_items {
   id            Int     @id @default(autoincrement())
   quantity      Int
+ 
   created_at    DateTime @default(now())
   modified_at   DateTime @updatedAt
  

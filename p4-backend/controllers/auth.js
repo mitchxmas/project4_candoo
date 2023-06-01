@@ -8,14 +8,15 @@ const { v4: uuidv4 } = require("uuid");
 
 // This now works!
 const register = async (req, res) => {
+  console.log("req.body", req.body);
+
   try {
     // check if the email already exists!!!
-    const auth = await prisma.auth_users.findUnique({
-      where: {
-        email: req.body.email,
-      },
+    const auth = await prisma.auth_users.findFirst({
+      where: { email: req.body.email },
     });
 
+    console.log("auth", auth);
     if (auth) {
       return res.status(400).json({ status: "ok", msg: "duplicate email" });
     }
@@ -40,6 +41,8 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  console.log("req.body", req.body);
+
   try {
     // check if the login exists
     const auth = await prisma.auth_users.findUnique({

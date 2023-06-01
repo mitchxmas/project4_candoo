@@ -98,27 +98,6 @@ const putOrderPayment = async (req, res) => {
     const varId = req.body.order_id;
     console.log("here we are", varId);
 
-    const customPatch = (variable) => {
-      const patchOrderPayment = async (req, res) => {
-        try {
-          const updatedOrder = {};
-
-          updatedOrder.is_paid = true;
-          console.log("order_id", variable);
-          await prisma.orders.update({
-            where: { id: idNum },
-            data: updatedOrder,
-          });
-
-          res.json({ status: "ok", msg: "order has been updated yeah" });
-        } catch (error) {
-          console.log(error.message);
-          res.json({ status: "error", msg: "error in updating order lah" });
-        }
-        return;
-      };
-    };
-
     customPatch(varId);
 
     res.json({ status: "OK", msg: "order payment saved" });

@@ -7,10 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model auth_roles {
+  role String @id @db.VarChar(45)
+}
+
 model auth_users {
-  email    String @id @unique(map: "Auth_users_email_key") @db.VarChar(255)
+  email    String @unique(map: "email_UNIQUE") @db.VarChar(255)
   password String @db.VarChar(255)
-  role     String
+  id       Int    @unique(map: "id_UNIQUE") @default(autoincrement())
+  role     String @db.VarChar(45)
+
+  @@id([id, email])
 }
 
 model buyer_payment_means {
@@ -126,15 +133,16 @@ model users {
   password            String                @db.VarChar(255)
   created_at          DateTime              @default(now())
   updated_at          DateTime
-  email               String                @db.VarChar(255)
   mobile              Int
   postcode            Int
   is_seller           Boolean
-  role                String                @default("user") @db.VarChar(255)
   address_line1       String                @db.VarChar(255)
   address_line2       String                @db.VarChar(255)
   city                String                @db.VarChar(255)
   country             String                @db.VarChar(255)
+  auth_users_id       Int
+  email               String                @db.VarChar(255)
+  role                String                @db.VarChar(45)
   buyer_payment_means buyer_payment_means[]
   orders              orders[]
   seller_services     seller_services[]

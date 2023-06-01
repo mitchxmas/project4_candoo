@@ -1,0 +1,165 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model Auth_users {
+  email     String @id @db.VarChar(255) @unique
+  password  String @db.VarChar(255)
+  role      String 
+}
+
+model Users {
+  id            String @id @default(uuid())
+  username      String @db.VarChar(255)
+  firstname     String @db.VarChar(255)
+  lastname      String @db.VarChar(255)
+  password      String @db.VarChar(255)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  email         String @db.VarChar(255)
+  mobile        Int     
+  address_line1 String @db.VarChar(255)
+  address_line2 String @db.VarChar(255)
+  city          String @db.VarChar(255)
+  postcode      Int
+  country       String @db.VarChar(255)
+  role          String @db.VarChar(255) @default("user")
+  is_seller     Boolean
+
+  cart_items Cart_items[]
+  seller_services Seller_services[]
+  orders Orders[]
+  buyer_payment_means Buyer_payment_means[]
+
+  }
+
+model Buyer_payment_means {
+  id          Int @id @default(autoincrement())
+  type        String @db.VarChar(255)
+  provider    String @db.VarChar(255)
+// One to One link to user address table
+  user Users @relation(fields: [buyer_id], references: [id])
+  buyer_id String
+  payments Payments[]
+}
+
+model Categories {
+  id     Int     @id @default(autoincrement())
+  name   String @db.VarChar(255)
+  services Services[]  
+}
+
+model Services {
+  id     Int     @id @default(autoincrement())
+  name   String @db.VarChar(255)
+  desc   String @db.VarChar(255)
+
+  category Categories @relation(fields:[category_id], references:[id])
+  category_id   Int  
+
+  seller_services Seller_services[]
+}
+
+
+model Seller_services {
+  id            Int     @id @default(autoincrement())
+  name          String @db.VarChar(255)
+  desc          String @db.VarChar(255)
+  
+  // 1 to 1 link to the services table (one seller_service can only belong to one service) 
+  service Services @relation(fields: [service_id], references: [id]) 
+  service_id   Int
+
+  // Many to one link to the Sellers table (one seller can sell many services...) 
+  user Users @relation(fields: [seller_id], references: [id]) 
+  seller_id   String
+
+  cart_items Cart_items[]
+  order_items Order_items[]
+  
+
+}
+
+
+
+model Cart_items {
+  id            Int     @id @default(autoincrement())
+  quantity      Int
+  created_at    DateTime @default(now())
+  modified_at   DateTime @updatedAt
+ 
+  // 1 to 1 link to the services table (one seller_service can only belong to one service) 
+  seller_service Seller_services @relation(fields: [seller_service_id], references: [id]) 
+  seller_service_id   Int
+ 
+  // Many to one link to the Users table (one seller can sell many services...) 
+  user Users @relation(fields: [buyer_id], references: [id]) 
+  buyer_id   String
+
+}
+
+
+
+model Orders {
+  id            Int     @id @default(autoincrement())
+  quantity      Int
+  total         Decimal
+   created_at    DateTime @default(now())
+  
+   // Many to one link to the Users table (one buyer can have many orders...) 
+  user Users @relation(fields: [buyer_id], references: [id]) 
+  buyer_id   String
+
+  // payment_id
+ payments Payments[]
+
+order_items Order_items[]
+
+}
+
+
+model Order_items {
+  id            Int     @id @default(autoincrement())
+  quantity      Int
+  created_at    DateTime @default(now())
+  modified_at   DateTime @updatedAt
+ 
+  // 1 to 1 link to the services table (one seller_service can only belong to one service) 
+  seller_service Seller_services @relation(fields: [seller_service_id], references: [id]) 
+  seller_service_id   Int
+ 
+  // Many to one link to the Users table (one seller can sell many services...) 
+  order Orders @relation(fields: [order_id], references: [id]) 
+  order_id   Int
+
+}
+
+
+
+
+
+model Payments {
+  id          Int     @id @default(autoincrement())
+  amount      Int
+  total       Decimal
+  createdAt   DateTime @default(now())
+  
+   // Many to one link to the Users table (one buyer can have many orders...) 
+  order Orders @relation(fields: [order_id], references: [id]) 
+  order_id   Int
+
+  // payment_id
+  buyer_payment_mean Buyer_payment_means @relation(fields: [buyer_payment_means_id], references: [id]) 
+  buyer_payment_means_id   Int
+
+}

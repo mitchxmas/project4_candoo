@@ -57,6 +57,8 @@ const getOneUser = async (req, res) => {
 // this works!
 const putUsers = async (req, res) => {
   // we encrypt the password using the bcrypt dependency
+
+  console.log("this is being called");
   const hash = await bcrypt.hash(req.body.password, 12);
   try {
     await prisma.users.create({
@@ -64,16 +66,16 @@ const putUsers = async (req, res) => {
         email: req.body.email,
         password: hash,
         role: req.body.role,
+        is_seller: req.body.is_seller,
         username: req.body.username,
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         mobile: req.body.mobile,
         address_line1: req.body.address_line1,
         address_line2: req.body.address_line2,
-        city: req.body.city,
         postcode: req.body.postcode,
+        city: req.body.city,
         country: req.body.country,
-        is_seller: req.body.is_seller,
       },
     });
     res.json({ status: "OK", msg: "user saved" });

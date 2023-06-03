@@ -16,6 +16,7 @@ const Login = (props) => {
 
     if (ok) {
       userCtx.setAccessToken(data.access);
+      console.log("AccessToken:", data.access);
       // partial decoding of the jwt (only header and the payload)
       const decoded = jwt_decode(data.access);
       userCtx.setRole(decoded.role);

@@ -16,7 +16,6 @@ const register = async (req, res) => {
       where: { email: req.body.email },
     });
 
-    console.log("auth", auth);
     if (auth) {
       return res.status(400).json({ status: "ok", msg: "duplicate email" });
     }

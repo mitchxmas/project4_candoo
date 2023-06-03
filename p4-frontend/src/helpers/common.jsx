@@ -1,3 +1,5 @@
+// export const fetchData = async (endpoint, token, method, body) => {
+
 export const fetchData = async (endpoint, token, method, body) => {
   const res = await fetch(import.meta.env.VITE_SERVER + endpoint, {
     method,

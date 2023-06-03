@@ -7,7 +7,7 @@ import Temp from "./components/Temp";
 
 function App() {
   const [accessToken, setAccessToken] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("user");
   const [showLogin, setShowLogin] = useState(true);
 
   return (
@@ -15,10 +15,9 @@ function App() {
       <UserContext.Provider
         value={{ accessToken, setAccessToken, role, setRole }}
       >
-        <Temp />
-
-        <BooksDisplay />
-
+        {/* <Login></Login>
+        <Registration></Registration> */}
+        {/* {accessToken.length > 0 && <Temp />} */}
         {accessToken.length > 0 && <BooksDisplay />}
 
         {accessToken.length === 0 && showLogin && (

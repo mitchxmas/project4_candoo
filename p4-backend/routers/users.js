@@ -11,9 +11,9 @@ const {
 const checkValid = require("../middleware/checkValid");
 const { auth, adminAuth } = require("../middleware/auth");
 
-router.get("/users", auth, getUsers);
+router.get("/users", adminAuth, getUsers);
 router.post("/users", auth, getOneUser);
-router.put("/users", adminAuth, checkValid, putUsers);
+router.put("/users", auth, checkValid, putUsers);
 router.delete("/users", adminAuth, checkValid, deleteUser);
 
 router.patch("/users", adminAuth, checkValid, patchUser);

@@ -9,8 +9,15 @@ html {
 }
 
 body {
-  margin: 0;
+  margin-right: 3rem;
+  margin-left: 3rem;
+
   background-color: whitesmoke;
+}
+
+.title {
+  font-size: 30px;
+  margin-bottom: 20px;
 }
 
 .centered {

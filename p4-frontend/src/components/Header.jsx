@@ -4,7 +4,7 @@ import NavBar from "./NavBar";
 import SearchBar from "./SearchBar";
 import Services from "./Services";
 import HomePage from "./HomePage";
-import Book from "./Book";
+import Cart from "./Cart";
 import Profile from "./Profile";
 
 const Header = () => {
@@ -15,7 +15,7 @@ const Header = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/Services" element={<Services />} />
         <Route path="/MyProfile" element={<Profile />} />
-        <Route path="/dailyweather" element={<Book></Book>} />
+        <Route path="/Cart" element={<Cart></Cart>} />
       </Routes>
       <SearchBar />
     </div>

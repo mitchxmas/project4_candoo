@@ -10,12 +10,7 @@ const OverLay = (props) => {
   const [email, setEmail] = useState("admin@admin.com");
   const [password, setPassword] = useState("password");
 
-  const handleLoginGetUser = () => {
-    loginUser();
-    getAuthUser();
-    getUserDetails();
-  };
-
+  // This works and logs in the user based on his email and password
   const loginUser = async () => {
     const { ok, data } = await fetchData("/auth/login", undefined, "POST", {
       email,
@@ -24,51 +19,17 @@ const OverLay = (props) => {
 
     if (ok) {
       userCtx.setAccessToken(data.access);
-      console.log("Login data:", data);
-      console.log("AccessToken:", data.access);
 
       // partial decoding of the jwt (only header and the payload)
       const decoded = jwt_decode(data.access);
-      props.setShowLoginModal(false);
       console.log("Logged In!!!", "role:", userCtx.role);
+      userCtx.setAuthUser(decoded.authUser);
+      props.setShowLoginModal(false);
     } else {
       console.log(data);
     }
+    return;
   };
-
-  const getAuthUser = async () => {
-    const { ok, data } = await fetchData("/auth/user", undefined, "POST", {
-      email,
-    });
-
-    if (ok) {
-      userCtx.setAuthUser(data);
-      console.log("User data:", data);
-    } else {
-      console.log(data);
-      console.log("User data:", data);
-    }
-  };
-
-  const getUserDetails = async () => {
-    const { ok, data } = await fetchData("/api/users", undefined, "POST", {
-      auth_user_id,
-    });
-
-    if (ok) {
-      userCtx.setUser(data);
-      console.log("User data:", data);
-    } else {
-      console.log(data);
-    }
-  };
-
-  useEffect(() => {
-    email;
-    password;
-    getAuthUser;
-    loginUser;
-  }, []);
 
   // 1st
   return (
@@ -104,7 +65,7 @@ const OverLay = (props) => {
         <div className="row">
           <div className="col-md-3"></div>
           {/* <button onClick={() => handleLoginGetUser()} className="col-md-3"> */}
-          <button onClick={() => handleLoginGetUser()} className="col-md-3">
+          <button onClick={() => loginUser()} className="col-md-3">
             Login
           </button>
           <button

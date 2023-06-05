@@ -84,7 +84,7 @@ const OverLay = (props) => {
                 Register
               </button>
               <button
-                onClick={() => props.setShowLoginModal(false)}
+                onClick={() => props.setShowRegisterModal(false)}
                 className="col-md-3"
               >
                 Cancel

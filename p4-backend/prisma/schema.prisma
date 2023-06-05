@@ -22,12 +22,14 @@ model auth_users {
 }
 
 model buyer_payment_means {
-  id       Int        @id @default(autoincrement())
-  type     String     @db.VarChar(255)
-  provider String     @db.VarChar(255)
-  buyer_id String
-  users    users      @relation(fields: [buyer_id], references: [id], onUpdate: NoAction, map: "buyer_payment_means_ibfk_1")
-  payments payments[]
+  id          Int        @id @default(autoincrement())
+  type        String     @db.VarChar(255)
+  provider    String     @db.VarChar(255)
+  buyer_id    String
+  card_number String?    @db.VarChar(45)
+  card_expiry String?    @db.VarChar(45)
+  users       users      @relation(fields: [buyer_id], references: [id], onUpdate: NoAction, map: "buyer_payment_means_ibfk_1")
+  payments    payments[]
 
   @@index([buyer_id], map: "buyer_id")
 }
@@ -132,9 +134,8 @@ model users {
   username            String                @db.VarChar(255)
   firstname           String                @db.VarChar(255)
   lastname            String                @db.VarChar(255)
-  password            String                @db.VarChar(255)
   created_at          DateTime              @default(now())
-  updated_at          DateTime
+  updated_at          DateTime?
   mobile              Int
   postcode            Int
   is_seller           Boolean

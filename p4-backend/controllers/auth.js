@@ -62,6 +62,7 @@ const login = async (req, res) => {
     const payload = {
       email: auth.email,
       role: auth.role,
+      authUser: auth,
     };
 
     const access = jwt.sign(payload, process.env.ACCESS_SECRET, {

@@ -92,4 +92,18 @@ const getAllAuthenticatedUsers = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getAllAuthenticatedUsers };
+const getAuthUser = async (req, res) => {
+  try {
+    // check if the email already exists!!!
+    const auth = await prisma.auth_users.findUnique({
+      where: { email: req.body.email },
+    });
+    res.json(auth);
+    console.log("getAuthUser, auth:", auth);
+  } catch (error) {
+    console.log(error);
+    res.json({ status: "error", msg: "cannot get the auth user" });
+  }
+};
+
+module.exports = { register, login, getAllAuthenticatedUsers, getAuthUser };

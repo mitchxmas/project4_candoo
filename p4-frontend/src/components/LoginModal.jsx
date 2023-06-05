@@ -10,7 +10,13 @@ const OverLay = (props) => {
   const [email, setEmail] = useState("admin@admin.com");
   const [password, setPassword] = useState("password");
 
-  const login = async () => {
+  const handleLoginGetUser = () => {
+    loginUser();
+    getAuthUser();
+    getUserDetails();
+  };
+
+  const loginUser = async () => {
     const { ok, data } = await fetchData("/auth/login", undefined, "POST", {
       email,
       password,
@@ -18,13 +24,40 @@ const OverLay = (props) => {
 
     if (ok) {
       userCtx.setAccessToken(data.access);
+      console.log("Login data:", data);
       console.log("AccessToken:", data.access);
+
       // partial decoding of the jwt (only header and the payload)
       const decoded = jwt_decode(data.access);
       props.setShowLoginModal(false);
       console.log("Logged In!!!", "role:", userCtx.role);
-      setEmail("");
-      setPassword("");
+    } else {
+      console.log(data);
+    }
+  };
+
+  const getAuthUser = async () => {
+    const { ok, data } = await fetchData("/auth/user", undefined, "POST", {
+      email,
+    });
+
+    if (ok) {
+      userCtx.setAuthUser(data);
+      console.log("User data:", data);
+    } else {
+      console.log(data);
+      console.log("User data:", data);
+    }
+  };
+
+  const getUserDetails = async () => {
+    const { ok, data } = await fetchData("/api/users", undefined, "POST", {
+      auth_user_id,
+    });
+
+    if (ok) {
+      userCtx.setUser(data);
+      console.log("User data:", data);
     } else {
       console.log(data);
     }
@@ -33,6 +66,8 @@ const OverLay = (props) => {
   useEffect(() => {
     email;
     password;
+    getAuthUser;
+    loginUser;
   }, []);
 
   // 1st
@@ -68,7 +103,8 @@ const OverLay = (props) => {
         <br />
         <div className="row">
           <div className="col-md-3"></div>
-          <button onClick={() => login()} className="col-md-3">
+          {/* <button onClick={() => handleLoginGetUser()} className="col-md-3"> */}
+          <button onClick={() => handleLoginGetUser()} className="col-md-3">
             Login
           </button>
           <button

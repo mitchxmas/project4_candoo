@@ -12,10 +12,11 @@ model auth_roles {
 }
 
 model auth_users {
-  email    String @unique(map: "email_UNIQUE") @db.VarChar(255)
-  password String @db.VarChar(255)
-  id       Int    @unique(map: "id_UNIQUE") @default(autoincrement())
-  role     String @db.VarChar(45)
+  email    String  @unique(map: "email_UNIQUE") @db.VarChar(255)
+  password String  @db.VarChar(255)
+  id       Int     @unique(map: "id_UNIQUE") @default(autoincrement())
+  role     String  @db.VarChar(45)
+  user_id  String?
 
   @@id([id, email])
 }
@@ -141,8 +142,8 @@ model users {
   address_line2       String                @db.VarChar(255)
   city                String                @db.VarChar(255)
   country             String                @db.VarChar(255)
-  auth_users_id       Int
-  email               String                @db.VarChar(255)
+  auth_user_id        Int                   @unique(map: "auth_user_id_UNIQUE")
+  email               String                @unique(map: "email_UNIQUE") @db.VarChar(255)
   role                String                @db.VarChar(45)
   buyer_payment_means buyer_payment_means[]
   orders              orders[]

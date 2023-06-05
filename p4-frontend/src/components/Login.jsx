@@ -8,28 +8,30 @@ const Login = (props) => {
   const [email, setEmail] = useState("admin@admin.com");
   const [password, setPassword] = useState("password");
 
-  const handleLogin = async () => {
-    const { ok, data } = await fetchData("/auth/login", undefined, "POST", {
-      email,
-      password,
-    });
+  // const handleLogin = async () => {
+  //   const { ok, data } = await fetchData("/auth/login", undefined, "POST", {
+  //     email,
+  //     password,
+  //   });
 
-    if (ok) {
-      userCtx.setAccessToken(data.access);
-      console.log("AccessToken:", data.access);
-      // partial decoding of the jwt (only header and the payload)
-      const decoded = jwt_decode(data.access);
-      userCtx.setRole(decoded.role);
-    } else {
-      console.log(data);
-    }
-  };
+  //   if (ok) {
+  //     console.log("login data", data);
+
+  //     userCtx.setAccessToken(data.access);
+  //     console.log("AccessToken:", data.access);
+  //     // partial decoding of the jwt (only header and the payload)
+  //     const decoded = jwt_decode(data.access);
+  //     userCtx.setRole(decoded.role);
+  //   } else {
+  //     console.log(data);
+  //   }
+  // };
 
   return (
     <div>
       <>
         <br />
-        <div className="row">
+        {/* <div className="row">
           <div className="col-md-4"></div>
           <input
             type="text"
@@ -69,7 +71,7 @@ const Login = (props) => {
             Register with Candoo
           </button>
           <div className="col-md-4"></div>
-        </div>
+        </div> */}
       </>
     </div>
   );

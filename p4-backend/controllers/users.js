@@ -45,7 +45,7 @@ const getUsers = async (req, res) => {
 const getOneUser = async (req, res) => {
   try {
     const oneUser = await prisma.users.findUnique({
-      where: { id: req.body.id },
+      where: { auth_user_id: req.body.auth_user_id },
     });
     res.json(oneUser);
   } catch (error) {

@@ -5,36 +5,36 @@ import { fetchData } from "../helpers/common";
 import UserContext from "../context/user";
 
 const OverLay = (props) => {
-  const userCtx = useContext(UserContext);
-  const [email, setEmail] = useState("admin@admin.com");
-  const [password, setPassword] = useState("password");
+  // const userCtx = useContext(UserContext);
+  // const [email, setEmail] = useState("admin@admin.com");
+  // const [password, setPassword] = useState("password");
 
-  const login = async () => {
-    const { ok, data } = await fetchData("/auth/login", undefined, "POST", {
-      email,
-      password,
-    });
+  // const login = async () => {
+  //   const { ok, data } = await fetchData("/auth/login", undefined, "POST", {
+  //     email,
+  //     password,
+  //   });
 
-    if (ok) {
-      userCtx.setAccessToken(data.access);
-      console.log("AccessToken:", data.access);
-      // partial decoding of the jwt (only header and the payload)
-      const decoded = jwt_decode(data.access);
-      userCtx.setRole(decoded.role);
-    } else {
-      console.log(data);
-    }
-  };
+  //   if (ok) {
+  //     userCtx.setAccessToken(data.access);
+  //     console.log("AccessToken:", data.access);
+  //     // partial decoding of the jwt (only header and the payload)
+  //     const decoded = jwt_decode(data.access);
+  //     userCtx.setRole(decoded.role);
+  //   } else {
+  //     console.log(data);
+  //   }
+  // };
 
-  useEffect(() => {
-    email;
-    password;
-  }, []);
+  // useEffect(() => {
+  //   email;
+  //   password;
+  // }, []);
 
   // 1st
   return (
     <div className={styles.backdrop}>
-      <div className={styles.modal}>
+      {/* <div className={styles.modal}>
         <br />
         <br />
         <div className="row">
@@ -75,7 +75,7 @@ const OverLay = (props) => {
           </button>
           <div className="col-md-3"></div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
@@ -83,10 +83,10 @@ const OverLay = (props) => {
 const UpdateModal = (props) => {
   return (
     <>
-      {ReactDOM.createPortal(
+      {/* {ReactDOM.createPortal(
         <OverLay setShowLoginModal={props.setShowLoginModal} />,
         document.querySelector("#modal-root")
-      )}
+      )} */}
     </>
   );
 };

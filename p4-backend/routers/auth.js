@@ -6,10 +6,12 @@ const {
   register,
   login,
   getAllAuthenticatedUsers,
+  getAuthUser,
 } = require("../controllers/auth");
 
 router.put("/register", checkValid, register);
 router.post("/login", checkValid, login);
-router.get("", checkValid, getAllAuthenticatedUsers);
+router.get("/users", checkValid, getAllAuthenticatedUsers);
+router.post("/user", checkValid, getAuthUser);
 
 module.exports = router;

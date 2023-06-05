@@ -14,7 +14,7 @@ const {
 const checkValid = require("../middleware/checkValid");
 const { auth, adminAuth } = require("../middleware/auth");
 
-router.get("/categories", auth, getAllCategoriesOnly);
+router.get("/categories", getAllCategoriesOnly);
 router.get("/categories/services/all", auth, getAllCategoriesIncludingServices);
 router.get("/category/services", auth, getAllServicesInCategory);
 

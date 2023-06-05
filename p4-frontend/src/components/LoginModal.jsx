@@ -21,9 +21,10 @@ const OverLay = (props) => {
       console.log("AccessToken:", data.access);
       // partial decoding of the jwt (only header and the payload)
       const decoded = jwt_decode(data.access);
-      userCtx.setRole(decoded.role);
       props.setShowLoginModal(false);
       console.log("Logged In!!!", "role:", userCtx.role);
+      setEmail("");
+      setPassword("");
     } else {
       console.log(data);
     }
@@ -83,15 +84,15 @@ const OverLay = (props) => {
   );
 };
 
-const UpdateModal = (props) => {
+const LoginModal = (props) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <OverLay id={props.id} setShowLoginModal={props.setShowLoginModal} />,
+        <OverLay setShowLoginModal={props.setShowLoginModal} />,
         document.querySelector("#modal-root")
       )}
     </>
   );
 };
 
-export default UpdateModal;
+export default LoginModal;

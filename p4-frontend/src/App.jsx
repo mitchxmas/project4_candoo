@@ -1,31 +1,24 @@
 import React, { useState } from "react";
-import BooksDisplay from "./components/BooksDisplay";
 import Registration from "./components/Registration";
 import Login from "./components/Login";
 import UserContext from "./context/user";
-import Temp from "./components/Temp";
+import Book from "./components/Book";
+import Services from "./components/Services";
+import BooksDisplay from "./components/BooksDisplay";
+import Header from "./components/Header";
+import HomePage from "./components/HomePage";
 
 function App() {
   const [accessToken, setAccessToken] = useState("");
   const [role, setRole] = useState("user");
   const [showLogin, setShowLogin] = useState(true);
-
   return (
     <>
       <UserContext.Provider
         value={{ accessToken, setAccessToken, role, setRole }}
       >
-        {/* <Login></Login>
-        <Registration></Registration> */}
-        {/* {accessToken.length > 0 && <Temp />} */}
-        {accessToken.length > 0 && <BooksDisplay />}
-
-        {accessToken.length === 0 && showLogin && (
-          <Login setShowLogin={setShowLogin} />
-        )}
-        {accessToken.length === 0 && !showLogin && (
-          <Registration setShowLogin={setShowLogin} />
-        )}
+        <Header />
+        {/* <BooksDisplay /> */}
       </UserContext.Provider>
     </>
   );

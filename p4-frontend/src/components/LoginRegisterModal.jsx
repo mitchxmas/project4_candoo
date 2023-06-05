@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import ReactDOM from "react-dom";
-import styles from "./Modal.module.css";
+import styles from "./LoginRegisterModal.module.css";
 import { fetchData } from "../helpers/common";
 import UserContext from "../context/user";
-import jwt_decode from "jwt-decode";
 
 const OverLay = (props) => {
   const userCtx = useContext(UserContext);
@@ -22,8 +21,6 @@ const OverLay = (props) => {
       // partial decoding of the jwt (only header and the payload)
       const decoded = jwt_decode(data.access);
       userCtx.setRole(decoded.role);
-      props.setShowLoginModal(false);
-      console.log("Logged In!!!", "role:", userCtx.role);
     } else {
       console.log(data);
     }
@@ -44,9 +41,9 @@ const OverLay = (props) => {
           <div className="col-md-3"></div>
           <div className="col-md-3">Email</div>
           <input
-            value={email}
-            type="text"
             className="col-md-3"
+            type="text"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <div className="col-md-3"></div>
@@ -54,11 +51,11 @@ const OverLay = (props) => {
 
         <div className="row">
           <div className="col-md-3"></div>
-          <div className="col-md-3">Author</div>
+          <div className="col-md-3">Password</div>
           <input
-            value={password}
-            type="text"
             className="col-md-3"
+            type="text"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <div className="col-md-3"></div>
@@ -68,7 +65,7 @@ const OverLay = (props) => {
         <div className="row">
           <div className="col-md-3"></div>
           <button onClick={() => login()} className="col-md-3">
-            Login
+            login
           </button>
           <button
             onClick={() => props.setShowLoginModal(false)}
@@ -87,7 +84,7 @@ const UpdateModal = (props) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <OverLay id={props.id} setShowLoginModal={props.setShowLoginModal} />,
+        <OverLay setShowLoginModal={props.setShowLoginModal} />,
         document.querySelector("#modal-root")
       )}
     </>

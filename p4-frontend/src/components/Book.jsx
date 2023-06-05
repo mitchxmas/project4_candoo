@@ -8,14 +8,7 @@ const Book = (props) => {
   return (
     <>
       {showUpdateModal && (
-        <UpdateModal
-          id={props.id}
-          title={props.title}
-          author={props.author}
-          yearPublished={props.yearPublished}
-          getBooks={props.getBooks}
-          setShowUpdateModal={setShowUpdateModal}
-        />
+        <UpdateModal setShowUpdateModal={setShowUpdateModal} />
       )}
 
       <div className={`row ${styles.book}`}>

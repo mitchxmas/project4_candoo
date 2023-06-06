@@ -6,6 +6,7 @@ import UserContext from "../context/user";
 const BooksDisplay = () => {
   const userCtx = useContext(UserContext);
   const [books, setBooks] = useState([]);
+  const [services, setServices] = useState([]);
 
   const titleRef = useRef();
   const authorRef = useRef();

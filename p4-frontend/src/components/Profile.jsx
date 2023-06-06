@@ -4,11 +4,12 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import UserContext from "../context/user";
-import PaymentMeans from "./PaymentMeans";
+import PaymentMeans from "./PaymentMethods";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import styles from "./Profile.module.css";
 import { FormSelect } from "react-bootstrap";
+import SellerServices from "./SellerServices";
 
 const Profile = (props) => {
   const userCtx = useContext(UserContext);
@@ -26,10 +27,11 @@ const Profile = (props) => {
   const [isSeller, setIsSeller] = useState("");
   const [authUserId, setAuthUserId] = useState("");
   const [paymentMeans, setPaymentMeans] = useState([]);
-  const [paymentType, setPaymentType] = useState([]);
+  const [paymentType, setPaymentType] = useState("Credit Card");
   const [paymentProvider, setPaymentProvider] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
+  const [disableEditing, setDisableEditing] = useState(false);
 
   const checkUserDetailsAndSubmit = (e) => {
     e.preventDefault();
@@ -38,6 +40,7 @@ const Profile = (props) => {
     } else {
       addUserDetails();
     }
+    setDisableEditing(true);
   };
 
   const submitPaymentMeansForm = (e) => {
@@ -116,6 +119,7 @@ const Profile = (props) => {
       setCity("");
       setCountry("");
       setAuthUserId("");
+      getUserDetails();
     } else {
       console.log("createUser:", data);
     }
@@ -153,7 +157,8 @@ const Profile = (props) => {
     }
   };
 
-  const getPaymentMeans = async () => {
+  // This works!
+  const getUsersPaymentMethods = async () => {
     const { ok, data } = await fetchData(
       "/api/user/paymentmeans",
       userCtx.accessToken,
@@ -200,13 +205,18 @@ const Profile = (props) => {
 
   useEffect(() => {
     getUserDetails();
+    setDisableEditing(false);
+  }, []);
+
+  useEffect(() => {
+    getUserDetails();
+    setDisableEditing(false);
   }, [userCtx.authUser]);
 
   useEffect(() => {
-    getPaymentMeans();
+    getUsersPaymentMethods();
+    setDisableEditing(true);
   }, [userCtx.user]);
-
-  // useEffect(() => {}, [firstName]);
 
   return (
     <>
@@ -216,310 +226,368 @@ const Profile = (props) => {
 
         {!userCtx.authUser && "Please login to access your account details"}
         {userCtx.authUser && (
-          <Form>
-            <Row>
-              <Col>
-                {/* // IS THE USER A SELLER? */}
-                <Form.Label className={styles.formTitles}>Profile</Form.Label>
-                <Form.Group className="mb-3">
-                  <Form.Check
-                    inline
-                    label="I am a seller"
-                    // name="group1"
-                    type="checkbox"
-                    id="checkbok_isSeller"
-                    checked={isSeller}
-                    onChange={(e) => {
-                      setIsSeller(!isSeller);
-                    }}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col>
-                {/* // USER NAME */}
-                <Form.Group className="mb-3" controlId="formBasicUserName">
-                  <Form.Label className={styles.formTitles}>
-                    User name
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter user name"
-                    value={userName}
-                    onChange={(e) => {
-                      setUserName(e.target.value);
-                    }}
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
-                {/* // FIRST NAME */}
-                <Form.Group className="mb-3" controlId="formBasicFirstName">
-                  <Form.Label className={styles.formTitles}>
-                    First Name
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter first name"
-                    value={firstName}
-                    onChange={(e) => {
-                      setFirstName(e.target.value);
-                    }}
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
-                {/* // LAST NAME */}
-                <Form.Group className="mb-3" controlId="formBasicLastName">
-                  <Form.Label className={styles.formTitles}>
-                    Last Name
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter last name"
-                    value={lastName}
-                    onChange={(e) => {
-                      setLastName(e.target.value);
-                    }}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col>
-                {/* // EMAIL */}
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label className={styles.formTitles}>
-                    Email address
-                  </Form.Label>
-                  <Form.Control
-                    disabled
-                    type="email"
-                    placeholder="Enter email"
-                    value={userCtx.authUser.email}
-                  />
-                </Form.Group>
-              </Col>
-
-              <Col>
-                {/* // MOBILE */}
-                <Form.Group className="mb-3" controlId="formBasicMobile">
-                  <Form.Label className={styles.formTitles}>
-                    Mobile number{" "}
-                  </Form.Label>
-                  <InputGroup>
-                    <InputGroup.Text>+65</InputGroup.Text>
-                    <Form.Control
-                      type="number"
-                      placeholder="Mobile number"
-                      aria-label="+65"
-                      value={mobile}
+          <>
+            <Form>
+              <Row>
+                <Col>
+                  {/* // IS THE USER A SELLER? */}
+                  <Form.Label className={styles.formTitles}>Profile</Form.Label>
+                  <Form.Group className="mb-3">
+                    <Form.Check
+                      disabled={disableEditing}
+                      inline
+                      label="I am a seller"
+                      // name="group1"
+                      type="checkbox"
+                      id="checkbok_isSeller"
+                      checked={isSeller}
                       onChange={(e) => {
-                        setMobile(e.target.value);
+                        setIsSeller(!isSeller);
                       }}
                     />
-                  </InputGroup>
-                </Form.Group>
-              </Col>
-            </Row>
+                  </Form.Group>
+                </Col>
+              </Row>
 
-            {/* // ADDRESS LINES 1 & 2 */}
-            <Form.Group className="mb-3" controlId="formBasicAddressLine1">
-              <Form.Label className={styles.formTitles}>Address </Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="enter address line 1"
-                value={addressLine1}
-                onChange={(e) => {
-                  setAddressLine1(e.target.value);
-                }}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicAddressLine2">
-              <Form.Control
-                type="text"
-                placeholder="enter address line 2"
-                value={addressLine2}
-                onChange={(e) => {
-                  setAddressLine2(e.target.value);
-                }}
-              />
-            </Form.Group>
+              <Row>
+                <Col>
+                  {/* // USER NAME */}
+                  <Form.Group className="mb-3" controlId="formBasicUserName">
+                    <Form.Label className={styles.formTitles}>
+                      User name
+                    </Form.Label>
+                    <Form.Control
+                      disabled={disableEditing}
+                      type="text"
+                      placeholder="Enter user name"
+                      value={userName}
+                      onChange={(e) => {
+                        setUserName(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  {/* // FIRST NAME */}
+                  <Form.Group className="mb-3" controlId="formBasicFirstName">
+                    <Form.Label className={styles.formTitles}>
+                      First Name
+                    </Form.Label>
+                    <Form.Control
+                      disabled={disableEditing}
+                      type="text"
+                      placeholder="Enter first name"
+                      value={firstName}
+                      onChange={(e) => {
+                        setFirstName(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  {/* // LAST NAME */}
+                  <Form.Group className="mb-3" controlId="formBasicLastName">
+                    <Form.Label className={styles.formTitles}>
+                      Last Name
+                    </Form.Label>
+                    <Form.Control
+                      disabled={disableEditing}
+                      type="text"
+                      placeholder="Enter last name"
+                      value={lastName}
+                      onChange={(e) => {
+                        setLastName(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-            <Row>
-              <Col>
-                {/* // POST CODE */}
-                <Form.Group className="mb-3" controlId="formBasicPostcode">
+              <Row>
+                <Col>
+                  {/* // EMAIL */}
+                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label className={styles.formTitles}>
+                      Email address
+                    </Form.Label>
+                    <Form.Control
+                      disabled
+                      type="email"
+                      placeholder="Enter email"
+                      value={userCtx.authUser.email}
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col>
+                  {/* // MOBILE */}
+                  <Form.Group className="mb-3" controlId="formBasicMobile">
+                    <Form.Label className={styles.formTitles}>
+                      Mobile number{" "}
+                    </Form.Label>
+                    <InputGroup>
+                      <InputGroup.Text>+65</InputGroup.Text>
+                      <Form.Control
+                        disabled={disableEditing}
+                        type="number"
+                        placeholder="Mobile number"
+                        aria-label="+65"
+                        value={mobile}
+                        onChange={(e) => {
+                          setMobile(e.target.value);
+                        }}
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row>
+                {/* // ADDRESS LINES 1 & 2 */}
+                <Form.Group className="mb-3" controlId="formBasicAddressLine1">
                   <Form.Label className={styles.formTitles}>
-                    Postcode
+                    Address{" "}
                   </Form.Label>
                   <Form.Control
+                    disabled={disableEditing}
                     type="text"
-                    placeholder="Enter postcode"
-                    value={postcode}
+                    placeholder="enter address line 1"
+                    value={addressLine1}
                     onChange={(e) => {
-                      setPostcode(e.target.value);
+                      setAddressLine1(e.target.value);
                     }}
                   />
                 </Form.Group>
-              </Col>
-              <Col>
-                {/* // CITY - disabled with default value Singapore */}
-                <Form.Group className="mb-3" controlId="formBasicCity">
-                  <Form.Label className={styles.formTitles}>City</Form.Label>
+                <Form.Group className="mb-3" controlId="formBasicAddressLine2">
                   <Form.Control
+                    disabled={disableEditing}
                     type="text"
-                    disabled
-                    value={city}
-                    placeholder="City"
+                    placeholder="enter address line 2"
+                    value={addressLine2}
                     onChange={(e) => {
-                      setCity(e.target.value);
+                      setAddressLine2(e.target.value);
                     }}
                   />
                 </Form.Group>
-              </Col>
+              </Row>
 
-              <Col>
-                {/* // COUNTRY - disabled with default value Singapore */}
-                <Form.Group className="mb-3" controlId="formBasicCountry">
-                  <Form.Label className={styles.formTitles}>Country</Form.Label>
-                  <Form.Control
-                    type="text"
-                    disabled
-                    placeholder="Singapore"
-                    value={country}
-                    onChange={(e) => {
-                      setCountry(e.target.value);
-                    }}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+              <Row>
+                <Col>
+                  {/* // POST CODE */}
+                  <Form.Group className="mb-3" controlId="formBasicPostcode">
+                    <Form.Label className={styles.formTitles}>
+                      Postcode
+                    </Form.Label>
+                    <Form.Control
+                      disabled={disableEditing}
+                      type="text"
+                      placeholder="Enter postcode"
+                      value={postcode}
+                      onChange={(e) => {
+                        setPostcode(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  {/* // CITY - disabled with default value Singapore */}
+                  <Form.Group className="mb-3" controlId="formBasicCity">
+                    <Form.Label className={styles.formTitles}>City</Form.Label>
+                    <Form.Control
+                      type="text"
+                      disabled
+                      value={city}
+                      placeholder="City"
+                      onChange={(e) => {
+                        setCity(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
 
-            <Button
-              variant="primary"
-              type="submit"
-              onClick={(e) => {
-                checkUserDetailsAndSubmit(e);
-              }}
-            >
-              Save
-            </Button>
-            {/* --- END OF USER DETAILS FORM ---  */}
-          </Form>
-        )}
+                <Col>
+                  {/* // COUNTRY - disabled with default value Singapore */}
+                  <Form.Group className="mb-3" controlId="formBasicCountry">
+                    <Form.Label className={styles.formTitles}>
+                      Country
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      disabled
+                      placeholder="Singapore"
+                      value={country}
+                      onChange={(e) => {
+                        setCountry(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-        {paymentMeans && (
-          <div>
-            {paymentMeans.map((item, index) => {
-              return <PaymentMeans item={item} index={index} />;
-            })}
-          </div>
-        )}
-
-        <>
-          <div>Add payment method</div>
-          <br />
-          <Form>
-            <Row>
-              <Col>
-                {/* // Type */}
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label className={styles.formTitles}>
-                    Payment Type
-                  </Form.Label>
-
-                  <FormSelect
-                    onChange={(e) => {
-                      setPaymentType(e.target.value);
-                      console.log(paymentType);
+              {disableEditing && (
+                <Form.Group>
+                  <Button
+                    variant="primary"
+                    onClick={(e) => {
+                      setDisableEditing(false);
                     }}
                   >
-                    <option default disabled value="0">
-                      Select payment type:
-                    </option>
-                    <option value="Credit Card">Credit Card</option>
-                    <option value="Paypal">Paypal</option>
-                    <option value="NETS">NETS</option>
-                    <option value="Bitcoin">Bitcoin</option>
-                  </FormSelect>
+                    Update
+                  </Button>
                 </Form.Group>
-              </Col>
-
-              {paymentType === "Credit Card" && (
-                <>
-                  <Col>
-                    {/* // PROVIDER */}
-
-                    <Form.Group className="mb-3" controlId="formBasicUserName">
-                      <Form.Label className={styles.formTitles}>
-                        Payment Provider
-                      </Form.Label>
-                      <FormSelect
-                        onChange={(e) => {
-                          setPaymentProvider(e.target.value);
-                          console.log(paymentProvider);
-                        }}
-                      >
-                        <option default disabled value="0">
-                          Select payment provider, if applicable:
-                        </option>
-                        <option value="MasterCard">MasterCard</option>
-                        <option value="Visa">Visa</option>
-                      </FormSelect>
-                    </Form.Group>
-                  </Col>
-
-                  <Col>
-                    {/* // CARD NUMBER */}
-                    <Form.Group className="mb-3" controlId="formBasicUserName">
-                      <Form.Label className={styles.formTitles}>
-                        Card Number
-                      </Form.Label>
-                      <Form.Control
-                        type="number"
-                        placeholder="Card number"
-                        value={cardNumber}
-                        onChange={(e) => {
-                          setCardNumber(e.target.value);
-                        }}
-                      />
-                    </Form.Group>
-                  </Col>
-
-                  <Col>
-                    {/* // CARD EXPIRY */}
-                    <Form.Group className="mb-3" controlId="formBasicUserName">
-                      <Form.Label className={styles.formTitles}>
-                        Card expiry
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Card expiry"
-                        value={cardExpiry}
-                        onChange={(e) => {
-                          setCardExpiry(e.target.value);
-                        }}
-                      />
-                    </Form.Group>
-                  </Col>
-                </>
               )}
-            </Row>
-            <Button
-              variant="primary"
-              type="submit"
-              onClick={(e) => {
-                submitPaymentMeansForm(e);
-              }}
-            >
-              Add
-            </Button>
-          </Form>
-        </>
+
+              {!disableEditing && (
+                <Form.Group>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    onClick={(e) => {
+                      checkUserDetailsAndSubmit(e);
+                    }}
+                  >
+                    Save
+                  </Button>
+                </Form.Group>
+              )}
+
+              {/* --- END OF USER DETAILS FORM ---  */}
+            </Form>
+          </>
+        )}
+
+        {!isSeller && (
+          <>
+            {userCtx.authUser && userCtx.user && (
+              <div>
+                <br />
+                <div className="title">Payment Methods</div>
+
+                {paymentMeans && (
+                  <div>
+                    {paymentMeans.map((item, index) => {
+                      return <PaymentMeans item={item} index={index} />;
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {userCtx.authUser && userCtx.user && (
+              <>
+                <div>Add a payment method</div>
+                <br />
+                <Form>
+                  <Row>
+                    <Col>
+                      {/* // Type */}
+                      <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Label className={styles.formTitles}>
+                          Payment Type
+                        </Form.Label>
+
+                        <FormSelect
+                          onChange={(e) => {
+                            setPaymentType(e.target.value);
+                            console.log(paymentType);
+                          }}
+                        >
+                          <option default disabled value="0">
+                            Select payment type:
+                          </option>
+                          <option value="Credit Card">Credit Card</option>
+                          <option value="Paypal">Paypal</option>
+                          <option value="NETS">NETS</option>
+                          <option value="Bitcoin">Bitcoin</option>
+                        </FormSelect>
+                      </Form.Group>
+                    </Col>
+
+                    {paymentType === "Credit Card" && (
+                      <>
+                        <Col>
+                          {/* // PROVIDER */}
+
+                          <Form.Group
+                            className="mb-3"
+                            controlId="formBasicUserName"
+                          >
+                            <Form.Label className={styles.formTitles}>
+                              Payment Provider
+                            </Form.Label>
+                            <FormSelect
+                              onChange={(e) => {
+                                setPaymentProvider(e.target.value);
+                                console.log(paymentProvider);
+                              }}
+                            >
+                              <option default disabled value="0">
+                                Select payment provider, if applicable:
+                              </option>
+                              <option value="MasterCard">MasterCard</option>
+                              <option value="Visa">Visa</option>
+                            </FormSelect>
+                          </Form.Group>
+                        </Col>
+
+                        <Col>
+                          {/* // CARD NUMBER */}
+                          <Form.Group
+                            className="mb-3"
+                            controlId="formBasicUserName"
+                          >
+                            <Form.Label className={styles.formTitles}>
+                              Card Number
+                            </Form.Label>
+                            <Form.Control
+                              type="number"
+                              placeholder="Card number"
+                              value={cardNumber}
+                              onChange={(e) => {
+                                setCardNumber(e.target.value);
+                              }}
+                            />
+                          </Form.Group>
+                        </Col>
+
+                        <Col>
+                          {/* // CARD EXPIRY */}
+                          <Form.Group
+                            className="mb-3"
+                            controlId="formBasicUserName"
+                          >
+                            <Form.Label className={styles.formTitles}>
+                              Card expiry
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Card expiry"
+                              value={cardExpiry}
+                              onChange={(e) => {
+                                setCardExpiry(e.target.value);
+                              }}
+                            />
+                          </Form.Group>
+                        </Col>
+                      </>
+                    )}
+                  </Row>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    onClick={(e) => {
+                      submitPaymentMeansForm(e);
+                    }}
+                  >
+                    Add
+                  </Button>
+                </Form>
+              </>
+            )}
+          </>
+        )}
+
+        {isSeller && <SellerServices />}
 
         <br />
       </div>

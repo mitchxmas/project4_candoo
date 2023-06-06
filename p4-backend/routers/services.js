@@ -16,16 +16,16 @@ const { auth, adminAuth } = require("../middleware/auth");
 
 router.get("/categories", getAllCategoriesOnly);
 router.get("/categories/services/all", auth, getAllCategoriesIncludingServices);
-router.get("/category/services", auth, getAllServicesInCategory);
+router.post("/category/services", auth, getAllServicesInCategory);
 
 router.get("/services", auth, getAllServicesOnly);
 router.get("/services/sellers/all", auth, getAllServicesIncludingSellers);
 router.get("/service/sellers", auth, getAllServiceSellers);
 
-router.get("/services/seller", auth, getAllServicesFromSeller);
+router.post("/services/seller", auth, getAllServicesFromSeller);
 
-router.put("/service/sellers", adminAuth, putSellerService);
+router.put("/service/seller", auth, putSellerService);
 
-router.delete("/service/sellers", adminAuth, deleteSellerService);
+router.delete("/service/seller", auth, deleteSellerService);
 
 module.exports = router;

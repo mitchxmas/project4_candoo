@@ -7,7 +7,7 @@ import jwt_decode from "jwt-decode";
 
 const OverLay = (props) => {
   const userCtx = useContext(UserContext);
-  const [email, setEmail] = useState("admin@admin.com");
+  const [email, setEmail] = useState("jane@gmail.com");
   const [password, setPassword] = useState("password");
 
   // This works and logs in the user based on his email and password

@@ -118,7 +118,6 @@ const patchUser = async (req, res) => {
     if ("auth_user_id" in req.body)
       updatedUser.auth_user_id = req.body.auth_user_id;
 
-    // await prisma.users.findByIdAndUpdate(req.params.id, updatedUser);
     console.log("updatedUser", updatedUser);
     await prisma.users.update({
       where: { id: req.body.id },

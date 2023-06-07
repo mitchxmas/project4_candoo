@@ -70,13 +70,6 @@ const OverLay = (props) => {
               <div className="col-md-3"></div>
             </div>
 
-            <div className="row">
-              <div className="col-md-3"></div>
-              <div className="col-md-3">Role</div>
-              <input value={role} type="text" className="col-md-3" disabled />
-              <div className="col-md-3"></div>
-            </div>
-
             <br />
             <div className="row">
               <div className="col-md-3"></div>

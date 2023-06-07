@@ -18,7 +18,7 @@ router.post("/user", auth, getOneUser);
 router.put("/users", auth, checkValid, putUsers);
 router.delete("/users", adminAuth, checkValid, deleteUser);
 
-router.patch("/users", checkValid, patchUser);
+router.patch("/users", auth, checkValid, patchUser);
 
 router.get("/seed", seedUsers);
 

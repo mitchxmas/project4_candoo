@@ -3,10 +3,12 @@ import SellerServiceTable from "./SellerServiceTable";
 import UserContext from "../context/user";
 import { fetchData } from "../helpers/common";
 import Form from "react-bootstrap/Form";
-import { Col, FormControl, Row } from "react-bootstrap";
+import InputGroup from "react-bootstrap/InputGroup";
+import { Col, FormControl, Row, Tab } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import styles from "./SellerServices.module.css";
 import { FormSelect } from "react-bootstrap";
+import Table from "react-bootstrap/Table";
 
 const SellerServices = () => {
   const userCtx = useContext(UserContext);
@@ -137,8 +139,8 @@ const SellerServices = () => {
   };
 
   useEffect(() => {
+    getAllServicesFromSeller();
     setServiceSelected("");
-    setCategorySelected("");
     getAllCategories();
   }, []);
 
@@ -149,15 +151,6 @@ const SellerServices = () => {
 
   return (
     <div>
-      <br />
-      <button
-        onClick={() => {
-          getAllServicesFromSeller();
-        }}
-      >
-        Do something
-      </button>
-      <br />
       {/* {!userCtx.user.isSeller && ( */}
       {true && (
         <>
@@ -169,23 +162,38 @@ const SellerServices = () => {
 
               {sellerServices && (
                 <div>
-                  {sellerServices.map((item, index) => {
-                    return (
-                      <SellerServiceTable
-                        item={item}
-                        index={index}
-                        key={item.id}
-                        id={item.id}
-                        name={item.name}
-                        desc={item.desc}
-                        price={item.price}
-                        price_type={item.price_type}
-                        service_id={item.service_id}
-                        deleteSellerService={deleteSellerService}
-                        // updateSellerService={updateSellerService}
-                      />
-                    );
-                  })}
+                  <Table striped bordered hover>
+                    <thead>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th>Price</th>
+                      <th>Pricing Unit</th>
+                      <th>Delete</th>
+                      <th>Update</th>
+                    </thead>
+                    <tbody>
+                      {sellerServices.map((item, index) => {
+                        console.log("Index:", index, "item", item);
+                        return (
+                          <SellerServiceTable
+                            item={item}
+                            index={index}
+                            key={item.id}
+                            id={item.id}
+                            name={item.name}
+                            desc={item.desc}
+                            price={item.price}
+                            price_type={item.price_type}
+                            service_id={item.service_id}
+                            getAllServicesFromSeller={getAllServicesFromSeller}
+                            deleteSellerService={deleteSellerService}
+                            // updateSellerService={updateSellerService}
+                          />
+                        );
+                      })}
+                    </tbody>
+                  </Table>
                 </div>
               )}
               <br />
@@ -296,14 +304,18 @@ const SellerServices = () => {
                       <Form.Label className={styles.formTitles}>
                         Price
                       </Form.Label>
-                      <Form.Control
-                        type="number"
-                        placeholder="service Price"
-                        value={servicePrice}
-                        onChange={(e) => {
-                          setServicePrice(e.target.value);
-                        }}
-                      />
+
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text id="basic-addon1">S$</InputGroup.Text>
+                        <Form.Control
+                          type="number"
+                          placeholder="service price"
+                          value={servicePrice}
+                          onChange={(e) => {
+                            setServicePrice(e.target.value);
+                          }}
+                        />
+                      </InputGroup>
                     </Form.Group>
                   </Col>
 

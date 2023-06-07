@@ -12,11 +12,12 @@ model auth_roles {
 }
 
 model auth_users {
-  email    String  @unique(map: "email_UNIQUE") @db.VarChar(255)
-  password String  @db.VarChar(255)
-  id       Int     @unique(map: "id_UNIQUE") @default(autoincrement())
-  role     String  @db.VarChar(45)
-  user_id  String?
+  email                                String @unique(map: "email_UNIQUE") @db.VarChar(255)
+  password                             String @db.VarChar(255)
+  id                                   Int    @unique(map: "id_UNIQUE") @default(autoincrement())
+  role                                 String @db.VarChar(45)
+  users_users_auth_user_idToauth_users users? @relation("users_auth_user_idToauth_users")
+  users_users_emailToauth_users        users? @relation("users_emailToauth_users")
 
   @@id([id, email])
 }
@@ -84,7 +85,7 @@ model orders {
   payments_payments_order_idToorders   payments[]    @relation("payments_order_idToorders")
 
   @@index([buyer_id], map: "buyer_id")
-  @@index([payment_id], map: "orders_ibfk_2")
+  @@index([payment_id], map: "payment_id")
 }
 
 model payments {
@@ -109,6 +110,7 @@ model seller_services {
   seller_id   String
   price       Decimal       @db.Decimal(20, 5)
   price_type  String        @db.VarChar(45)
+  img         String?       @db.VarChar(45)
   cart_items  cart_items[]
   order_items order_items[]
   services    services      @relation(fields: [service_id], references: [id], map: "Seller_services_service_id_fkey")
@@ -123,6 +125,7 @@ model services {
   name            String            @db.VarChar(255)
   desc            String            @db.VarChar(255)
   category_id     Int
+  img             String?           @db.VarChar(45)
   seller_services seller_services[]
   categories      categories        @relation(fields: [category_id], references: [id], map: "Services_category_id_key")
 
@@ -130,23 +133,25 @@ model services {
 }
 
 model users {
-  id                  String                @id
-  username            String                @db.VarChar(255)
-  firstname           String                @db.VarChar(255)
-  lastname            String                @db.VarChar(255)
-  created_at          DateTime              @default(now())
-  updated_at          DateTime?
-  mobile              Int
-  postcode            Int
-  is_seller           Boolean
-  address_line1       String                @db.VarChar(255)
-  address_line2       String                @db.VarChar(255)
-  city                String                @db.VarChar(255)
-  country             String                @db.VarChar(255)
-  auth_user_id        Int                   @unique(map: "auth_user_id_UNIQUE")
-  email               String                @unique(map: "email_UNIQUE") @db.VarChar(255)
-  role                String                @db.VarChar(45)
-  buyer_payment_means buyer_payment_means[]
-  orders              orders[]
-  seller_services     seller_services[]
+  id                                        String                @id
+  username                                  String?               @db.VarChar(255)
+  firstname                                 String                @db.VarChar(255)
+  lastname                                  String                @db.VarChar(255)
+  created_at                                DateTime              @default(now())
+  updated_at                                DateTime?             @default(now())
+  mobile                                    Int
+  postcode                                  Int
+  is_seller                                 Boolean
+  address_line1                             String                @db.VarChar(255)
+  address_line2                             String?               @db.VarChar(255)
+  city                                      String                @db.VarChar(255)
+  country                                   String                @db.VarChar(255)
+  auth_user_id                              Int                   @unique(map: "auth_user_id_UNIQUE")
+  email                                     String                @unique(map: "email_UNIQUE") @db.VarChar(255)
+  role                                      String                @db.VarChar(45)
+  buyer_payment_means                       buyer_payment_means[]
+  orders                                    orders[]
+  seller_services                           seller_services[]
+  auth_users_users_auth_user_idToauth_users auth_users            @relation("users_auth_user_idToauth_users", fields: [auth_user_id], references: [id], onUpdate: NoAction, map: "users_ibfk_1")
+  auth_users_users_emailToauth_users        auth_users            @relation("users_emailToauth_users", fields: [email], references: [email], onUpdate: NoAction, map: "users_ibfk_2")
 }

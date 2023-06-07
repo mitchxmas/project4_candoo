@@ -24,10 +24,10 @@ const Profile = (props) => {
   const [postcode, setPostcode] = useState("");
   const [city, setCity] = useState("Singapore");
   const [country, setCountry] = useState("Singapore");
-  const [isSeller, setIsSeller] = useState("");
+  const [isSeller, setIsSeller] = useState(false);
   const [authUserId, setAuthUserId] = useState("");
   const [paymentMeans, setPaymentMeans] = useState([]);
-  const [paymentType, setPaymentType] = useState("Credit Card");
+  const [paymentType, setPaymentType] = useState("");
   const [paymentProvider, setPaymentProvider] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
@@ -76,7 +76,7 @@ const Profile = (props) => {
       setIsSeller(data.is_seller);
       setAuthUserId(userCtx.authUser.id);
     } else {
-      console.log("haven't received any user details yet...:", data);
+      console.log("A pb occurred while retrieving the user's details", data);
     }
     return;
   };
@@ -172,50 +172,62 @@ const Profile = (props) => {
       setPaymentMeans(data);
       console.log("payment mneans :", data);
     } else {
-      console.log("haven't received any user details yet...:", data);
+      console.log("We could not get the user's payment details:", data);
     }
     return;
   };
 
-  const paymentObject = {
-    buyer_id: userCtx.user.id,
-    type: paymentType,
-    provider: paymentProvider,
-    card_number: cardNumber,
-    card_expiry: cardExpiry,
-  };
-
   const addPaymentMeans = async () => {
-    console.log("Payment Object:", paymentObject);
     const { ok, data } = await fetchData(
       "/api/user/paymentmeans",
       userCtx.accessToken,
       "PUT",
-      paymentObject
+      {
+        buyer_id: userCtx.user.id,
+        type: paymentType,
+        provider: paymentProvider,
+        card_number: cardNumber,
+        card_expiry: cardExpiry,
+      }
     );
 
     if (ok) {
-      setPaymentMeans(data);
-      console.log("payment mneans :", data);
+      getUsersPaymentMethods();
+      setCardNumber("");
+      setPaymentProvider("");
+      setPaymentType("");
+      setCardExpiry("");
     } else {
-      console.log("haven't received any user details yet...:", data);
+      console.log(
+        "A problem occurred while trying to add a payment method",
+        data
+      );
     }
     return;
   };
 
   useEffect(() => {
-    getUserDetails();
+    if (userCtx.user) {
+      getUserDetails();
+    }
     setDisableEditing(false);
   }, []);
 
   useEffect(() => {
-    getUserDetails();
-    setDisableEditing(false);
+    if (userCtx.user) {
+      getUserDetails();
+    }
+    if (!userCtx.user && userCtx.authUser) {
+      setDisableEditing(false);
+    }
   }, [userCtx.authUser]);
 
   useEffect(() => {
-    getUsersPaymentMethods();
-    setDisableEditing(true);
+    if (userCtx.authUser && userCtx.user && paymentMeans)
+      getUsersPaymentMethods();
+    if (userCtx.user && userCtx.authUser) {
+      setDisableEditing(true);
+    }
   }, [userCtx.user]);
 
   return (
@@ -237,10 +249,22 @@ const Profile = (props) => {
                       disabled={disableEditing}
                       inline
                       label="I am a seller"
-                      // name="group1"
-                      type="checkbox"
-                      id="checkbok_isSeller"
+                      name="group1"
+                      type="radio"
+                      id="radio_isSeller"
                       checked={isSeller}
+                      onChange={(e) => {
+                        setIsSeller(!isSeller);
+                      }}
+                    />
+                    <Form.Check
+                      disabled={disableEditing}
+                      inline
+                      label="I am a buyer"
+                      name="group1"
+                      type="radio"
+                      id="radio_isSeller"
+                      checked={!isSeller}
                       onChange={(e) => {
                         setIsSeller(!isSeller);
                       }}
@@ -487,12 +511,13 @@ const Profile = (props) => {
                         </Form.Label>
 
                         <FormSelect
+                          value={paymentType}
                           onChange={(e) => {
                             setPaymentType(e.target.value);
                             console.log(paymentType);
                           }}
                         >
-                          <option default disabled value="0">
+                          <option default value="">
                             Select payment type:
                           </option>
                           <option value="Credit Card">Credit Card</option>
@@ -516,6 +541,7 @@ const Profile = (props) => {
                               Payment Provider
                             </Form.Label>
                             <FormSelect
+                              value={paymentProvider}
                               onChange={(e) => {
                                 setPaymentProvider(e.target.value);
                                 console.log(paymentProvider);

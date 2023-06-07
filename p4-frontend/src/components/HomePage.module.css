@@ -1,0 +1,112 @@
+.mainContainer {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+/* Search Bar area */
+
+.searchBarContainer {
+  border: green 1px dotted;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0px;
+}
+.searchBar {
+  border: black solid 1px;
+  border-radius: 10px;
+  padding: 5px 20px;
+  width: 100%;
+}
+
+/* Service Filter  */
+.serviceFiltersContainer {
+  border: green 1px dotted;
+  display: flex;
+  flex-direction: row;
+  /* padding: 5px 20px; */
+  /* justify-content: center; */
+  margin-top: 0px;
+}
+
+.serviceFilters {
+  border: rgb(253, 36, 36) 3px solid;
+  background-color: rgb(255, 205, 205);
+  color: rgb(253, 36, 36);
+  border-radius: 10px;
+  margin-right: 15px;
+  padding: 3px;
+  justify-content: center;
+  padding-left: 20px;
+}
+
+.XcircleIcon {
+  color: rgb(253, 36, 36);
+  width: 20px;
+  position: relative;
+  left: 17px;
+  top: -17px;
+}
+
+/* CATEGORY TILES */
+
+.categoryTile {
+  font-size: 15px;
+  border: grey 1px dotted;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 200px;
+  height: 130px;
+}
+
+.gridContainerCategory {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: center;
+  gap: 20px;
+}
+
+.categoryImg {
+  width: 70px;
+}
+
+/* SERVICE TILES */
+
+.serviceImg {
+  width: 70px;
+}
+
+.gridContainerServices {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  justify-content: center;
+  margin: 0px 250px;
+  gap: 20px;
+}
+
+/* SERVICE SELLERS */
+
+.serviceSellersMainContainer {
+  margin-top: 5rem;
+}
+
+.serviceSellerTile {
+  font-size: 15px;
+  border: grey 1px dotted;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 200px;
+  height: 200px;
+  flex-grow: 0;
+}
+
+.gridContainerServiceSellers {
+  border: purple 1px dotted;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: center;
+  gap: 20px;
+}

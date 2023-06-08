@@ -26,6 +26,7 @@
   /* padding: 5px 20px; */
   /* justify-content: center; */
   margin-top: 0px;
+  margin-bottom: 20px;
 }
 
 .serviceFilters {
@@ -49,6 +50,16 @@
 
 /* CATEGORY TILES */
 
+.gridContainerCategory {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0px 30px;
+}
+
 .categoryTile {
   font-size: 15px;
   border: grey 1px dotted;
@@ -56,15 +67,8 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 200px;
+  width: 300px;
   height: 130px;
-}
-
-.gridContainerCategory {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  justify-content: center;
-  gap: 20px;
 }
 
 .categoryImg {
@@ -78,35 +82,66 @@
 }
 
 .gridContainerServices {
-  display: grid;
-  grid-template-columns: auto auto auto auto auto;
+  border: red dotted 1px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  margin: 0px 250px;
-  gap: 20px;
+  gap: 10px;
+  margin: 0px 30px;
+}
+
+.serviceTile {
+  font-size: 15px;
+  border: grey 1px dotted;
+  border-radius: 10px;
+  /* box-shadow: 0.1cm; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 150px;
+  height: 100px;
 }
 
 /* SERVICE SELLERS */
 
 .serviceSellersMainContainer {
-  margin-top: 5rem;
+  margin-top: 20px;
+  border: red dotted 1px;
 }
 
 .serviceSellerTile {
   font-size: 15px;
   border: grey 1px dotted;
+  border-radius: 10px;
   display: flex;
-  justify-content: center;
+  justify-content: baseline;
   align-items: center;
   flex-direction: column;
+  padding: 3px;
   width: 200px;
-  height: 200px;
+
+  height: 400px;
   flex-grow: 0;
 }
 
 .gridContainerServiceSellers {
-  border: purple 1px dotted;
-  display: grid;
-  grid-template-columns: auto auto auto;
+  border: red dotted 1px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
+  margin: 50px 30px;
+}
+
+/* This is the price tag on each service's tile  */
+.addToCart {
+  transform: rotate(-30deg);
+  position: relative;
+  left: -20px;
+  top: -5px;
 }

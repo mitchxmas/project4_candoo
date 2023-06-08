@@ -4,32 +4,6 @@ const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
 
 // --- CRUD Functions ---
-const seedUsers = async (req, res) => {
-  try {
-    await prisma.users.deleteMany();
-    await prisma.users.create([
-      {
-        title: "Interview With a Vampire",
-        author: "Anne Rice",
-        year_published: "1976",
-      },
-      { title: "IT", author: "Stephen King", year_published: "1986" },
-      { title: "The Hobbit", author: "J.R.R. Tolkin", year_published: "1996" },
-      { title: "Dune", author: "Frank Herbert", year_published: "1965" },
-      { title: "Gone Girl", author: "Gillian Flynn", year_published: "2012" },
-      {
-        title: "Murder on the Orient Express",
-        author: "Agatha Christie",
-        year_published: "1934",
-      },
-    ]);
-
-    res.json({ status: "ok", msg: "seeding successful" });
-  } catch (error) {
-    console.error(error.message);
-    res.status(400).json({ status: "error", msg: "seeding error" });
-  }
-};
 
 // this works!
 const getUsers = async (req, res) => {
@@ -74,6 +48,14 @@ const putUsers = async (req, res) => {
         postcode: req.body.postcode,
         city: req.body.city,
         country: req.body.country,
+        orders: {
+          create: {
+            gst: 0,
+            total: 0,
+            is_paid: 0,
+            payment_id: null,
+          },
+        },
       },
     });
     res.json({ status: "OK", msg: "user saved" });
@@ -166,7 +148,6 @@ const addUserPaymentMeans = async (req, res) => {
 };
 
 module.exports = {
-  seedUsers,
   getUsers,
   getOneUser,
   putUsers,

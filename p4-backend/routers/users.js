@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const {
-  seedUsers,
   getUsers,
   putUsers,
   deleteUser,
@@ -19,8 +18,6 @@ router.put("/users", auth, checkValid, putUsers);
 router.delete("/users", adminAuth, checkValid, deleteUser);
 
 router.patch("/users", auth, checkValid, patchUser);
-
-router.get("/seed", seedUsers);
 
 router.post("/user/paymentmeans", auth, getUserPaymentMeans);
 router.put("/user/paymentmeans", auth, addUserPaymentMeans);

@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import { Button } from "react-bootstrap";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
+import UserContext from "../context/user";
 
 const NavBar = () => {
+  const userCtx = useContext(UserContext);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-
-  useEffect(() => {}, []);
 
   return (
     <header className={styles.navbar}>
@@ -46,20 +46,28 @@ const NavBar = () => {
             </NavLink>
           </li>
 
-          <button
-            // className="col-sm-1"
-            name="login"
-            onClick={() => setShowLoginModal(true)}
-          >
-            Login
-          </button>
-          <button
-            // className="col-sm-1"
-            name="register"
-            onClick={() => setShowRegisterModal(true)}
-          >
+          {!userCtx.accessToken && (
+            <Button name="Login" onClick={() => setShowLoginModal(true)}>
+              Login
+            </Button>
+          )}
+
+          {userCtx.accessToken && (
+            <Button
+              name="Logout"
+              onClick={() => {
+                userCtx.setAccessToken("");
+                userCtx.setUser("");
+                userCtx.setAuthUser("");
+              }}
+            >
+              Logout
+            </Button>
+          )}
+
+          <Button name="Register" onClick={() => setShowRegisterModal(true)}>
             Register
-          </button>
+          </Button>
         </ul>
       </nav>
 

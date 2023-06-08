@@ -207,14 +207,21 @@ const Profile = (props) => {
   };
 
   useEffect(() => {
-    if (userCtx.user) {
+    console.log("userCtx.authUser", userCtx.authUser);
+    if (userCtx.authUser) {
       getUserDetails();
+      setDisableEditing(false);
     }
-    setDisableEditing(false);
+    if (userCtx.user) {
+      setDisableEditing(true);
+    } else {
+      setDisableEditing(false);
+    }
   }, []);
 
   useEffect(() => {
-    if (userCtx.user) {
+    console.log("userCtx.user", userCtx.user);
+    if (userCtx.authUser && !userCtx.user) {
       getUserDetails();
     }
     if (!userCtx.user && userCtx.authUser) {
@@ -229,6 +236,10 @@ const Profile = (props) => {
       setDisableEditing(true);
     }
   }, [userCtx.user]);
+
+  useEffect(() => {
+    getUserDetails();
+  }, [firstName]);
 
   return (
     <>

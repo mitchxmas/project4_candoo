@@ -9,18 +9,25 @@ const {
   patchOrder,
   putOrderPayment,
   patchOrderPayment,
+  createUserCart,
+  getCartIncludingCartItems,
 } = require("../controllers/orders");
 
+// Generate an empty cart when the user first registers
+router.put("/cart", auth, createUserCart);
+
 // Cart items (ie before payment)
-router.get("/orders/cart", auth, getAllCartItems);
-router.put("/orders/cart", adminAuth, putCartItem);
-router.delete("/orders/cart", adminAuth, deleteCartItem);
+router.post("/cart/items/only", auth, getAllCartItems);
+router.post("/cart/items", auth, getCartIncludingCartItems);
+
+router.put("/cart/item", auth, putCartItem);
+router.delete("/cart/item", auth, deleteCartItem);
 
 // Order items (ie after payment goes through)
-router.get("/order/items", auth, getOrderIncludingOrdereredItems);
-router.put("/orders/payment", auth, putOrderPayment);
+router.post("/order/items", auth, getOrderIncludingOrdereredItems);
+router.put("/order/payment", auth, putOrderPayment);
 // router.patch("/orders/payment/paid", auth, patchOrderPayment);
 
-router.patch("/orders", auth, patchOrder);
+router.patch("/order", auth, patchOrder);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import ReactDOM from "react-dom";
 import styles from "./Modal.module.css";
 import { fetchData } from "../helpers/common";
@@ -19,7 +19,6 @@ const OverLay = (props) => {
 
     if (ok) {
       userCtx.setAccessToken(data.access);
-
       // partial decoding of the jwt (only header and the payload)
       const decoded = jwt_decode(data.access);
       console.log("Logged In!!!", "role:", userCtx.role);

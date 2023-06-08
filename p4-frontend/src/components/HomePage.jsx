@@ -13,6 +13,8 @@ const HomePage = () => {
   const [serviceSelected, setServiceSelected] = useState("");
   const [serviceSellers, setServiceSellers] = useState([]);
 
+  const [sellerServiceSelected, setSellerServiceSelected] = useState("");
+
   const getAllCategories = async () => {
     const { ok, data } = await fetchData("/api/categories");
     if (ok) {
@@ -43,24 +45,6 @@ const HomePage = () => {
     }
   };
 
-  const getAllServiceSellers = async () => {
-    const { ok, data } = await fetchData(
-      "/api/service/sellers",
-      undefined,
-      "POST",
-      {
-        service_id: serviceSelected.id,
-      }
-    );
-    if (ok) {
-      setServiceSellers(data);
-      console.log("we have retrieved the service sellers", data);
-    } else {
-      console.log(data);
-      console.log("we could not retrieved the service sellers", data);
-    }
-  };
-
   const getAllServicesIncludingSellers = async () => {
     const { ok, data } = await fetchData(
       "/api/services/sellers/all",
@@ -73,7 +57,7 @@ const HomePage = () => {
     if (ok) {
       setServiceSellers(data);
       console.log(
-        "we have retrieved all services & sellers for that category",
+        "we have retrieved all services & sellers for that category, getAllServicesIncludingSellers",
         data
       );
     } else {
@@ -85,9 +69,32 @@ const HomePage = () => {
     }
   };
 
+  const addCartItem = async (item) => {
+    let cartItem = {
+      quantity: 1,
+      price: Number(item.price),
+      seller_service_id: item.id,
+      order_id: parseInt(userCtx.userCart.id),
+    };
+    console.log("addCartItem topics");
+    console.log("userCtx.userCart.id:", userCtx.userCart.id);
+
+    console.log("add cart item to cart:", cartItem);
+    const { ok, data } = await fetchData(
+      "/api/cart/item",
+      userCtx.accessToken,
+      "PUT",
+      cartItem
+    );
+    if (ok) {
+      console.log("we added the item to the cart", data);
+    } else {
+      console.log("we could not add item to the cart", data);
+    }
+  };
+
   useEffect(() => {
     getAllCategories();
-    getAllServiceSellers();
   }, []);
 
   useEffect(() => {
@@ -99,7 +106,7 @@ const HomePage = () => {
 
   useEffect(() => {
     if (serviceSelected) {
-      getAllServiceSellers();
+      getAllServicesIncludingSellers();
     }
   }, [serviceSelected]);
 
@@ -179,15 +186,14 @@ const HomePage = () => {
       </div>
 
       {/* LIST OF SERVICES GRID DISPLAY */}
-
-      {!serviceSelected && (
+      {!serviceSelected && categorySelected && (
         <div>
           <div className={styles.gridContainerServices}>
             {services.map((item, index) => {
               return (
                 <div>
                   <div
-                    className={styles.categoryTile}
+                    className={styles.serviceTile}
                     key={`${item.name}${item.id}`}
                     id={index}
                     onClick={(e) => setServiceSelected(item)}
@@ -209,35 +215,59 @@ const HomePage = () => {
       )}
 
       {/* LIST OF ALL SERVICE SELLERS DISPLAY */}
-
-      {categorySelected && serviceSelected && (
+      {categorySelected && (
         <div className={styles.serviceSellersMainContainer}>
           <div className={styles.gridContainerServiceSellers}>
             {serviceSellers.map((item, index) => {
               return (
-                <div>
-                  <div
-                    className={styles.serviceSellerTile}
-                    key={`${item.name}${item.id}`}
-                    id={index}
-                  >
-                    {item.name}
-                    <img
-                      className={styles.serviceSellerImg}
-                      key={`${item.name}${item.id}`}
-                      id={index}
-                      src={item.img}
-                      alt=""
-                    />
-                    <div className={styles.serviceSellerDesc}>
-                      Description: {item.desc}
-                    </div>
-                    <div className={styles.serviceSellerPrice}>
-                      Price: {item.price} {item.price_type}
-                    </div>
-                    <div></div>
-                  </div>
-                </div>
+                <>
+                  {item.seller_services.map((item2, index2) => {
+                    if (
+                      !serviceSelected ||
+                      item2.service_id === serviceSelected.id
+                    ) {
+                      return (
+                        <div>
+                          <div className={styles.addToCart}>
+                            {" "}
+                            <img
+                              className={styles.cartImg}
+                              src={"./images/buyIcon.png"}
+                              alt=""
+                              width="40px"
+                              id={item2.id}
+                              onClick={(e) => addCartItem(item2)}
+                            />
+                          </div>
+                          <div className={styles.serviceSellerTile}>
+                            <div className={styles.serviceName}>
+                              {item.name}
+                            </div>
+                            <div className={styles.sellerServiceName}>
+                              {item2.name}
+                            </div>
+                            <div className={styles.serviceSellerPrice}>
+                              Price: {item2.price} {item2.price_type}
+                            </div>
+                            <div>
+                              <img
+                                className={styles.serviceSellerImg}
+                                src={item2.img}
+                                alt=""
+                              />
+                            </div>
+
+                            <div className={styles.serviceSellerDesc}>
+                              Description: {item2.desc}
+                            </div>
+
+                            <div></div>
+                          </div>
+                        </div>
+                      );
+                    }
+                  })}
+                </>
               );
             })}
           </div>

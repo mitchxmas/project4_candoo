@@ -7,6 +7,7 @@ function App() {
   const [role, setRole] = useState("user");
   const [authUser, setAuthUser] = useState("");
   const [user, setUser] = useState("");
+  const [userCart, setUserCart] = useState("");
 
   return (
     <>
@@ -20,6 +21,8 @@ function App() {
           setAuthUser,
           user,
           setUser,
+          userCart,
+          setUserCart,
         }}
       >
         <Header />

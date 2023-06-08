@@ -1,19 +1,65 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-// --- CRUD Functions ---
+// --- MAIN STEPS OF THE CART TO ORDER PROCESS ---
+// 1. an empty cart (ie a blank 'order') is created when a authUser is created
+// 2. when the user is logged in, he/she can add cart-item to the order.
+// 3. the cart & items will be stored and available when the user logs out and back in later
+// 4. an "order" is merely when the payment has gone thru: payment details are registered, and cart_items become order_items
 
-// GET - get the cart items for an order
+// STEP 1 - creating the empty cart
+
+// PUT Create an empty 'order' ie the cart where cart item details will be stored
+const createUserCart = async (req, res) => {
+  console.log("this createUserCart was called");
+  try {
+    await prisma.orders.create({
+      data: {
+        gst: 0,
+        total: 0,
+        buyer_id: req.body.buyer_id,
+        is_paid: 0,
+        payment_id: null,
+      },
+    });
+    res.json({ status: "OK", msg: "an empty cart was created" });
+  } catch (error) {
+    console.error(error.message);
+    res.status(400).json({
+      status: "error",
+      msg: "something went wrong: an empty cart was not created",
+    });
+  }
+};
+
+// GET - get the cart items for an order, including the nested details of the service bought
 const getAllCartItems = async (req, res) => {
   console.log(req.body.order_id);
   try {
     const allCartItems = await prisma.cart_items.findMany({
       where: { order_id: req.body.order_id },
+      include: { seller_services: true },
     });
     res.json(allCartItems);
   } catch (error) {
     console.error(error.message);
     res.json({ status: "error", msg: "cannot get cart items" });
+  }
+};
+
+// GET - get a cart and cart items (a cart is an order which has not been paid, ie "is_paid" = false...)
+const getCartIncludingCartItems = async (req, res) => {
+  try {
+    const cartIncludingCartItems = await prisma.orders.findFirst({
+      where: { is_paid: 0, buyer_id: req.body.buyer_id },
+
+      include: { cart_items: true },
+    });
+    res.json(cartIncludingCartItems);
+    console.log("got cart and all cart items");
+  } catch (error) {
+    console.error(error.message);
+    res.json({ status: "error", msg: "cannot get cart and cart_items" });
   }
 };
 
@@ -29,10 +75,10 @@ const putCartItem = async (req, res) => {
         order_id: req.body.order_id,
       },
     });
-    res.json({ status: "OK", msg: "user saved" });
+    res.json({ status: "OK", msg: "item has been saved to cart" });
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ status: "error", msg: "cannot save user" });
+    res.status(400).json({ status: "error", msg: "cannot add cart item" });
   }
 };
 
@@ -124,6 +170,8 @@ const getOrderIncludingOrdereredItems = async (req, res) => {
 };
 
 module.exports = {
+  createUserCart,
+  getCartIncludingCartItems,
   getAllCartItems,
   putCartItem,
   deleteCartItem,

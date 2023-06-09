@@ -87,6 +87,7 @@ const HomePage = () => {
       cartItem
     );
     if (ok) {
+      alert("An item has been added to your cart.");
       console.log("we added the item to the cart", data);
     } else {
       console.log("we could not add item to the cart", data);
@@ -114,15 +115,6 @@ const HomePage = () => {
 
   return (
     <div className={styles.mainContainer}>
-      <div className={styles.searchBarContainer}>
-        <input
-          type="text"
-          id="searchBar"
-          placeholder="Search"
-          className={styles.searchBar}
-        ></input>
-      </div>
-
       <div className={styles.serviceFiltersContainer}>
         {categorySelected && (
           <div

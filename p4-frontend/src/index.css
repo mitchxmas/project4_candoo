@@ -5,13 +5,14 @@
 }
 
 html {
-  font-family: "Oxygen", sans-serif;
+  /* font-family: "Oxygen", sans-serif; */
+  font-family: "Geologica", sans-serif;
 }
 
 body {
   margin-right: 3rem;
   margin-left: 3rem;
-
+  font-family: "Geologica", sans-serif;
   background-color: whitesmoke;
 }
 

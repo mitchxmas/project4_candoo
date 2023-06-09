@@ -38,9 +38,11 @@ const getAllCartItems = async (req, res) => {
   try {
     const allCartItems = await prisma.cart_items.findMany({
       where: { order_id: req.body.order_id },
+
       include: { seller_services: true },
     });
     res.json(allCartItems);
+    console.log("req.body.order_id", req.body.order_id);
   } catch (error) {
     console.error(error.message);
     res.json({ status: "error", msg: "cannot get cart items" });
@@ -51,8 +53,9 @@ const getAllCartItems = async (req, res) => {
 const getCartIncludingCartItems = async (req, res) => {
   try {
     const cartIncludingCartItems = await prisma.orders.findFirst({
-      where: { is_paid: 0, buyer_id: req.body.buyer_id },
-
+      where: {
+        AND: [{ is_paid: 0 }, { buyer_id: req.body.buyer_id }],
+      },
       include: { cart_items: true },
     });
     res.json(cartIncludingCartItems);

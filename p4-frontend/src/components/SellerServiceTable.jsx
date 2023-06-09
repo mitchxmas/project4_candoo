@@ -48,23 +48,6 @@ const SellerServiceTable = (props) => {
       </tr>
     </>
   );
-
-  {
-    /* <div className="col-sm-2">{props.name}</div>
-      <div className="col-sm-3">{props.desc}</div>
-      <div className="col-sm-1">{props.price}</div>
-      <div className="col-sm-2">{props.pricingUnit}</div>
-
-      <button
-        className="col-sm-2"
-        onClick={() => props.deleteSellerService(props.id)}
-      >
-        delete
-      </button>
-      <button className="col-sm-2" onClick={() => setShowUpdateModal(true)}>
-        update
-      </button> */
-  }
 };
 
 export default SellerServiceTable;

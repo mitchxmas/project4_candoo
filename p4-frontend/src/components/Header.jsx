@@ -2,15 +2,20 @@ import React, { useState, useEffect, useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import UserContext from "../context/user";
 import NavBar from "./NavBar";
-import SearchBar from "./SearchBar";
-import Services from "./_NotInUse_Services";
 import HomePage from "./HomePage";
 import Cart from "./Cart";
 import Profile from "./Profile";
 import { fetchData } from "../helpers/common";
+import AdminDashboard from "./AdminDashboard";
 
 const Header = () => {
   const userCtx = useContext(UserContext);
+
+  userCtx.accessToken;
+  userCtx.authUser;
+  userCtx.user;
+  userCtx.userCart;
+  userCtx.countCartItems;
 
   const getUserDetails = async () => {
     const { ok, data } = await fetchData(
@@ -31,8 +36,8 @@ const Header = () => {
     return;
   };
 
-  const getUserCart = async () => {
-    console.log("getUserCart is being called");
+  const getCartIncludingCartItems = async () => {
+    console.log("HEADER - getCartIncludingCartItems is being called");
     const { ok, data } = await fetchData(
       "/api/cart/items",
       userCtx.accessToken,
@@ -44,20 +49,51 @@ const Header = () => {
 
     if (ok) {
       userCtx.setUserCart(data);
-      console.log("user cart has been retrieved", data);
+      console.log(
+        " HEADER - getCartIncludingCartItems has been retrieved",
+        data
+      );
     } else {
       console.log("user cart cannot be retrieved", data);
     }
     return;
   };
 
-  useEffect(() => {
-    getUserDetails();
-    getUserCart();
-  }, []);
+  //  Get all cart items and set context
+  const getAllCartItems = async () => {
+    console.log("HEADER - getAllCartItems is what's called here");
+    const { ok, data } = await fetchData(
+      "/api/cart/items/only",
+      userCtx.accessToken,
+      "POST",
+      {
+        order_id: parseInt(userCtx.userCart.id),
+      }
+    );
+    if (ok) {
+      console.log(
+        "HEADER - getAllCartItems, including details of the seller_services: ",
+        data
+      );
+      userCtx.setCountCartItems(data.length);
+      console.log("HEADER - getAllCartItems - Count:", data.length);
+    } else {
+      console.log(
+        "cannot get all cart items, including details of the seller_services: ",
+        data
+      );
+
+      console.log(data);
+    }
+  };
 
   useEffect(() => {
-    getUserCart();
+    getUserDetails();
+  }, [userCtx.authUser]);
+
+  useEffect(() => {
+    getAllCartItems();
+    getCartIncludingCartItems();
   }, [userCtx.user]);
 
   return (
@@ -65,11 +101,10 @@ const Header = () => {
       <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/Services" element={<Services />} />
         <Route path="/MyProfile" element={<Profile />} />
-        <Route path="/Cart" element={<Cart></Cart>} />
+        <Route path="/MyCart" element={<Cart />} />
+        <Route path="/Admin" element={<AdminDashboard />} />
       </Routes>
-      <SearchBar />
     </div>
   );
 };

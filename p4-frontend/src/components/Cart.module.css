@@ -1,3 +1,19 @@
 .formTitles {
   font-weight: bold;
 }
+
+.cart {
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
+.numbersInTable {
+  text-align: right;
+  padding-right: 7px;
+}
+
+.buttonInTable {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}

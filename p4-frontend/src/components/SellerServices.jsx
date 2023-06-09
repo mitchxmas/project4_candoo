@@ -197,13 +197,12 @@ const SellerServices = () => {
                 </div>
               )}
               <br />
-              <br />
             </div>
           )}
 
           {userCtx.authUser && userCtx.user && (
             <>
-              <div>Add a service</div>
+              <div className={styles.formTitles}>Add a service</div>
               <br />
               <Form>
                 <Row>
@@ -355,6 +354,7 @@ const SellerServices = () => {
               </Form>
             </>
           )}
+          <br />
         </>
       )}
     </div>

@@ -4,10 +4,11 @@ import Header from "./components/Header";
 
 function App() {
   const [accessToken, setAccessToken] = useState("");
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState("");
   const [authUser, setAuthUser] = useState("");
   const [user, setUser] = useState("");
   const [userCart, setUserCart] = useState("");
+  const [countCartItems, setCountCartItems] = useState("");
 
   return (
     <>
@@ -23,10 +24,11 @@ function App() {
           setUser,
           userCart,
           setUserCart,
+          countCartItems,
+          setCountCartItems,
         }}
       >
         <Header />
-        {/* <BooksDisplay /> */}
       </UserContext.Provider>
     </>
   );

@@ -11,10 +11,28 @@
 .modal {
   position: fixed;
   background: white;
-  top: 30vh;
-  bottom: 40vh;
-  left: 10%;
-  width: 80%;
+  top: 25vh;
+  bottom: 25vh;
+  left: 25%;
+  width: 50%;
   z-index: 100;
   overflow: hidden;
+}
+
+.form {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  width: 206px;
+  margin: 5px 0px;
+}
+
+.formTitles {
+  font-weight: bold;
 }

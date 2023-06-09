@@ -4,6 +4,10 @@ import styles from "./Modal.module.css";
 import { fetchData } from "../helpers/common";
 import UserContext from "../context/user";
 import jwt_decode from "jwt-decode";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import { Stack } from "react-bootstrap";
 
 const OverLay = (props) => {
   const userCtx = useContext(UserContext);
@@ -21,8 +25,11 @@ const OverLay = (props) => {
       userCtx.setAccessToken(data.access);
       // partial decoding of the jwt (only header and the payload)
       const decoded = jwt_decode(data.access);
-      console.log("Logged In!!!", "role:", userCtx.role);
+
+      console.log("Logged In!!!", "check role:", decoded.authUser.role);
       userCtx.setAuthUser(decoded.authUser);
+      userCtx.setRole(decoded.authUser.role);
+
       props.setShowLoginModal(false);
     } else {
       console.log(data);
@@ -34,46 +41,45 @@ const OverLay = (props) => {
   return (
     <div className={styles.backdrop}>
       <div className={styles.modal}>
-        <br />
-        <br />
-        <div className="row">
-          <div className="col-md-3"></div>
-          <div className="col-md-3">Email</div>
-          <input
-            value={email}
-            type="text"
-            className="col-md-3"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <div className="col-md-3"></div>
-        </div>
+        <div className={styles.form}>
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label className={styles.formTitles}>Email</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
+            </Form.Group>
 
-        <div className="row">
-          <div className="col-md-3"></div>
-          <div className="col-md-3">Author</div>
-          <input
-            value={password}
-            type="text"
-            className="col-md-3"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <div className="col-md-3"></div>
-        </div>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label className={styles.formTitles}>Password</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              />
+            </Form.Group>
+          </Form>
 
-        <br />
-        <div className="row">
-          <div className="col-md-3"></div>
-          {/* <button onClick={() => handleLoginGetUser()} className="col-md-3"> */}
-          <button onClick={() => loginUser()} className="col-md-3">
-            Login
-          </button>
-          <button
-            onClick={() => props.setShowLoginModal(false)}
-            className="col-md-3"
-          >
-            cancel
-          </button>
-          <div className="col-md-3"></div>
+          <Stack className={styles.form}>
+            <Button className={styles.button} onClick={() => loginUser()}>
+              Login
+            </Button>
+            <Button
+              variant="outline-primary"
+              className={styles.button}
+              onClick={() => props.setShowLoginModal(false)}
+            >
+              Cancel
+            </Button>
+          </Stack>
         </div>
       </div>
     </div>

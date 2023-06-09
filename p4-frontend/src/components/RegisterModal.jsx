@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import ReactDOM from "react-dom";
 import styles from "./Modal.module.css";
 import { fetchData } from "../helpers/common";
 import UserContext from "../context/user";
 import jwt_decode from "jwt-decode";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import { Stack } from "react-bootstrap";
 
 const OverLay = (props) => {
   const userCtx = useContext(UserContext);
@@ -42,70 +46,65 @@ const OverLay = (props) => {
   return (
     <div className={styles.backdrop}>
       <div className={styles.modal}>
-        <br />
-        <br />
         {showRegisterButton && (
-          <div>
-            <div className="row">
-              <div className="col-md-3"></div>
-              <div className="col-md-3">Email</div>
-              <input
-                value={email}
-                type="text"
-                className="col-md-3"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <div className="col-md-3"></div>
-            </div>
+          <div className={styles.form}>
+            <Form>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label className={styles.formTitles}>Email</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </Form.Group>
 
-            <div className="row">
-              <div className="col-md-3"></div>
-              <div className="col-md-3">Author</div>
-              <input
-                value={password}
-                type="text"
-                className="col-md-3"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <div className="col-md-3"></div>
-            </div>
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label className={styles.formTitles}>Password</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+              </Form.Group>
+            </Form>
 
-            <br />
-            <div className="row">
-              <div className="col-md-3"></div>
-              <button onClick={() => register()} className="col-md-3">
+            <Stack className={styles.form}>
+              <Button className={styles.button} onClick={() => register()}>
                 Register
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="outline-primary"
+                className={styles.button}
                 onClick={() => props.setShowRegisterModal(false)}
-                className="col-md-3"
               >
                 Cancel
-              </button>
-            </div>
+              </Button>
+            </Stack>
           </div>
         )}
 
         {!showRegisterButton && (
-          <div className="row">
-            <div className="col-md-3"></div>
-            <div className="col-md-6">
-              We have sent you an email. Please verify your email to complete
-              your account setup.
-            </div>
+          <div className={styles.form}>
             <br />
             <br />
             <br />
-            <div className="row">
-              <br />
-              <div className="col-md-4"></div>
-              <button
-                onClick={() => props.setShowRegisterModal(false)}
-                className="col-md-3"
-              >
-                Ok
-              </button>
-            </div>
+            We have sent you an email. Please verify your email to complete your
+            account setup.
+            <br />
+            <br />
+            <br />
+            <Button
+              onClick={() => props.setShowRegisterModal(false)}
+              className="col-md-3"
+            >
+              Ok
+            </Button>
           </div>
         )}
 

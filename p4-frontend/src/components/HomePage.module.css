@@ -3,34 +3,17 @@
   margin-right: 100px;
 }
 
-/* Search Bar area */
-
-.searchBarContainer {
-  border: green 1px dotted;
-  display: flex;
-  justify-content: center;
-  margin: 20px 0px;
-}
-.searchBar {
-  border: black solid 1px;
-  border-radius: 10px;
-  padding: 5px 20px;
-  width: 100%;
-}
-
 /* Service Filter  */
 .serviceFiltersContainer {
-  border: green 1px dotted;
+  /* border: green 1px dotted; */
   display: flex;
   flex-direction: row;
-  /* padding: 5px 20px; */
-  /* justify-content: center; */
-  margin-top: 0px;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
 .serviceFilters {
-  border: rgb(253, 36, 36) 3px solid;
+  /* border: rgb(253, 36, 36) 3px solid; */
   background-color: rgb(255, 205, 205);
   color: rgb(253, 36, 36);
   border-radius: 10px;
@@ -61,8 +44,11 @@
 }
 
 .categoryTile {
+  /* border: grey 1px dotted; */
   font-size: 15px;
-  border: grey 1px dotted;
+  background-color: rgb(240, 222, 200);
+  font-size: 15px;
+  font-weight: 600;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,7 +68,7 @@
 }
 
 .gridContainerServices {
-  border: red dotted 1px;
+  /* border: red dotted 1px; */
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -93,12 +79,15 @@
 }
 
 .serviceTile {
+  /* border: grey 1px dotted; */
   font-size: 15px;
-  border: grey 1px dotted;
   border-radius: 10px;
-  /* box-shadow: 0.1cm; */
+  background-color: rgb(240, 222, 200);
+  font-weight: 600;
   display: flex;
   justify-content: center;
+  text-align: center;
+  padding: 10px;
   align-items: center;
   flex-direction: column;
   width: 150px;
@@ -108,19 +97,20 @@
 /* SERVICE SELLERS */
 
 .serviceSellersMainContainer {
-  margin-top: 20px;
-  border: red dotted 1px;
+  /* border: red dotted 1px; */
+  margin-top: 10px;
 }
 
 .serviceSellerTile {
+  border: grey 1px solid;
   font-size: 15px;
-  border: grey 1px dotted;
+  background-color: rgb(243, 245, 243);
   border-radius: 10px;
   display: flex;
   justify-content: baseline;
   align-items: center;
   flex-direction: column;
-  padding: 3px;
+  padding: 10px;
   width: 200px;
 
   height: 400px;
@@ -128,14 +118,31 @@
 }
 
 .gridContainerServiceSellers {
-  border: red dotted 1px;
+  /* border: red dotted 1px; */
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin: 50px 30px;
+  margin: 10px 30px;
+}
+
+.serviceName {
+  color: red;
+  font-weight: 700;
+}
+
+.sellerServiceName {
+  color: blue;
+}
+
+.serviceSellerDesc {
+  color: grey;
+}
+
+.serviceSellerPrice {
+  font-weight: 600;
 }
 
 /* This is the price tag on each service's tile  */
@@ -144,4 +151,13 @@
   position: relative;
   left: -20px;
   top: -5px;
+}
+
+.serviceSellerImg {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 5px;
 }

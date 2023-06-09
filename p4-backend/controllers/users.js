@@ -8,7 +8,9 @@ const { v4: uuidv4 } = require("uuid");
 // this works!
 const getUsers = async (req, res) => {
   try {
-    const allUsers = await prisma.users.findMany({});
+    const allUsers = await prisma.users.findMany({
+      include: { seller_services: true },
+    });
     res.json(allUsers);
   } catch (error) {
     console.error(error.message);

@@ -1,11 +1,25 @@
+.header {
+  width: 100%;
+}
+.logoHomePage {
+  margin-left: 60px;
+}
+
 .navbar {
-  height: 3.5rem;
+  height: 6rem;
   background-color: rgb(0, 21, 79);
+  border-radius: 20px;
   color: white;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  margin-left: 30px;
+  margin-right: 30px;
 }
 
 .navbar nav {
   height: 100%;
+  width: 100%;
 }
 
 .navbar ul {
@@ -15,7 +29,7 @@
   padding: 0;
   margin: 0;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .navbar li {
@@ -32,10 +46,24 @@
 .navbar a:active,
 .navbar a.active {
   color: whitesmoke;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.5rem;
   border-bottom: 4px solid whitesmoke;
 }
 
-.flag {
-  margin-right: 10px;
+.button {
+  margin: 0px 10px;
+  width: 75px;
+}
+
+.countCartItems {
+  position: relative;
+  left: 17px;
+  background-color: red;
+  border-radius: 100%;
+  width: 22px;
+  height: 22px;
+  font-size: 15px;
+  line-height: normal;
+  font-weight: bold;
+  text-align: center;
 }

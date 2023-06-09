@@ -237,15 +237,11 @@ const Profile = (props) => {
     }
   }, [userCtx.user]);
 
-  useEffect(() => {
-    getUserDetails();
-  }, [firstName]);
-
   return (
     <>
       <div className={styles.profile}>
         <br />
-        <div className="title">User Details</div>
+        <div className="title">My Profile</div>
 
         {!userCtx.authUser && "Please login to access your account details"}
         {userCtx.authUser && (
@@ -254,7 +250,7 @@ const Profile = (props) => {
               <Row>
                 <Col>
                   {/* // IS THE USER A SELLER? */}
-                  <Form.Label className={styles.formTitles}>Profile</Form.Label>
+                  <Form.Label className={styles.formTitles}>Type</Form.Label>
                   <Form.Group className="mb-3">
                     <Form.Check
                       disabled={disableEditing}
@@ -490,8 +486,11 @@ const Profile = (props) => {
             </Form>
           </>
         )}
+        <br />
 
-        {!isSeller && (
+        {isSeller && <SellerServices />}
+
+        {true && (
           <>
             {userCtx.authUser && userCtx.user && (
               <div>
@@ -623,8 +622,6 @@ const Profile = (props) => {
             )}
           </>
         )}
-
-        {isSeller && <SellerServices />}
 
         <br />
       </div>

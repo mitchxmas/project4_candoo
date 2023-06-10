@@ -250,7 +250,7 @@ const HomePage = () => {
                             </div>
 
                             <div className={styles.serviceSellerDesc}>
-                              Description: {item2.desc}
+                              {item2.desc}
                             </div>
 
                             <div></div>

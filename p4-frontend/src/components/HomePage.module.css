@@ -101,48 +101,49 @@
   margin-top: 10px;
 }
 
+.gridContainerServiceSellers {
+  border: red dotted 1px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 30px;
+}
+
 .serviceSellerTile {
   border: grey 1px solid;
   font-size: 15px;
   background-color: rgb(243, 245, 243);
   border-radius: 10px;
   display: flex;
-  justify-content: baseline;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
   padding: 10px;
   width: 200px;
 
-  height: 400px;
+  min-height: 400px;
   flex-grow: 0;
 }
 
-.gridContainerServiceSellers {
-  /* border: red dotted 1px; */
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin: 10px 30px;
-}
-
 .serviceName {
-  color: red;
+  color: rgb(216, 28, 28);
   font-weight: 700;
 }
 
 .sellerServiceName {
-  color: blue;
+  color: rgb(79, 79, 82);
 }
 
 .serviceSellerDesc {
   color: grey;
+  text-align: center;
 }
 
 .serviceSellerPrice {
-  font-weight: 600;
+  font-weight: 300;
 }
 
 /* This is the price tag on each service's tile  */
